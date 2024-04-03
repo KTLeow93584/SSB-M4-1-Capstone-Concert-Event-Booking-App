@@ -1,0 +1,31 @@
+/* ========================= */
+
+.footer-container {
+    background-color: #222222;
+}
+
+.footer-header {
+    text-decoration: none;
+    color: rgb(125, 149, 255);
+}
+
+.footer-text {
+    text-decoration: none;
+    color: white;
+}
+
+.footer-link {
+    text-decoration: none;
+    color: white;
+    transition: color 0.2s;
+}
+
+.footer-link:hover {
+    color: red;
+}
+
+.footer-logo {
+    filter: invert(1);
+}
+
+/* ========================= */

@@ -1,0 +1,160 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "RoR APIs",
+    "dateExported": "2024-04-03T22:10:01.146Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "0ba29f27-da9b-4ddb-83e4-89c2fafc90d4",
+            "colId": "b1eab066-4e39-4201-85bb-8872d8c65b55",
+            "containerId": "",
+            "name": "Login (Individual - Email/Password)",
+            "url": "{{ror_url}}/login",
+            "method": "POST",
+            "sortNum": 5000,
+            "created": "2024-03-28T19:55:37.958Z",
+            "modified": "2024-03-28T22:10:04.406Z",
+            "headers": [
+                {
+                    "name": "Device",
+                    "value": "{{device-id}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"staff3@staff.com\",\n  \"password\": \"333333\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "7210da46-60b5-460c-8a6d-977e338debba",
+            "colId": "b1eab066-4e39-4201-85bb-8872d8c65b55",
+            "containerId": "",
+            "name": "Register (Individual - Email/Password)",
+            "url": "{{ror_url}}/register",
+            "method": "POST",
+            "sortNum": 7500,
+            "created": "2024-04-03T19:29:37.300Z",
+            "modified": "2024-04-03T21:55:52.150Z",
+            "headers": [
+                {
+                    "name": "Device",
+                    "value": "{{device-id}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"testEmail@test.com\",\n  \"country_id\": \"1\",\n  \"contact_number\": \"12222222\",\n  \"password\": \"111\",\n\n  // Individuals\n  \"name\": \"Adam Smith\",\n  \"nric\": \"1234056666\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "0653c6d0-7a40-40f5-b67e-53f0f719442e",
+            "colId": "b1eab066-4e39-4201-85bb-8872d8c65b55",
+            "containerId": "",
+            "name": "Register (Individual - Social Platforms)",
+            "url": "{{ror_url}}/register",
+            "method": "POST",
+            "sortNum": 8750,
+            "created": "2024-04-03T19:31:35.893Z",
+            "modified": "2024-04-03T21:55:51.708Z",
+            "headers": [
+                {
+                    "name": "Device",
+                    "value": "{{device-id}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"testEmail2@test.com\",\n  \"country_id\": \"1\",\n  \"contact_number\": \"12222222\",\n  \"social_provider\": \"google.com\",\n  \"social_uid\": \"123456789\",\n\n  // Individuals\n  \"name\": \"Jane Smith\",\n  \"nric\": \"4321056666\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "c27927b8-fef1-4673-8f4d-028317402d12",
+            "colId": "b1eab066-4e39-4201-85bb-8872d8c65b55",
+            "containerId": "",
+            "name": "Create New Event Booking",
+            "url": "{{ror_url}}/event",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-03-28T19:43:05.802Z",
+            "modified": "2024-03-28T19:50:45.638Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{JWToken}}"
+                },
+                {
+                    "name": "Device",
+                    "value": "{{device-id}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"event_venue_id\": 1,\n  \"event_name\": \"A Random Concerto\",\n  \"event_scheduled_start\": \"2024-03-28T19:47:37.558Z\",\n  \"event_scheduled_end\": \"2024-03-28T23:47:00.000Z\",\n  \"event_promo_image\": \"https://picsum.photos/id/35/256/256\",\n  \"event_remarks\": \"Hello World\"\n  \n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "e13ab7f0-8cb1-41e7-a54d-13ac77d6d32b",
+            "colId": "b1eab066-4e39-4201-85bb-8872d8c65b55",
+            "containerId": "",
+            "name": "Approve a Booking",
+            "url": "{{ror_url}}/event/approve",
+            "method": "POST",
+            "sortNum": 15000,
+            "created": "2024-03-28T22:04:09.983Z",
+            "modified": "2024-03-28T22:04:32.086Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{JWToken}}"
+                },
+                {
+                    "name": "Device",
+                    "value": "{{device-id}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"event_id\": 1\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "746606f3-6cdd-4ff5-9735-b3735aee5db4",
+            "colId": "b1eab066-4e39-4201-85bb-8872d8c65b55",
+            "containerId": "",
+            "name": "Get Booking Info",
+            "url": "{{ror_url}}/event/1",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2024-03-28T21:40:57.462Z",
+            "modified": "2024-03-28T21:41:15.431Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{JWToken}}"
+                },
+                {
+                    "name": "Device",
+                    "value": "{{device-id}}"
+                }
+            ],
+            "params": [],
+            "tests": []
+        }
+    ]
+}

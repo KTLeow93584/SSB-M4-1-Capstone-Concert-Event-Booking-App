@@ -1,0 +1,79 @@
+/* ---------------------------------- */
+/* Main Elements */
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ---------------------------------- */
+/* Socials Themes (Facebook, Google, etc.) */
+.facebook-container {
+    background-color: #1877f2 !important;
+}
+
+.facebook-container:hover {
+    background-color: #034396 !important;
+}
+
+.google-container {
+    background-color: #ffffff !important;
+}
+
+.google-container:hover {
+    background-color: #dbdbdb !important;
+}
+
+/* ---------------------------------- */
+/* Front Page (Middle Section) */
+
+.banner-img {
+    width: 100%;
+    height: 10vw;
+}
+
+.banner-default-bg {
+    background-color: #cfd9de;
+}
+
+/* ---------------------------------- */
+/* Navigation Panel Elements */
+
+.nav-panel-text {
+    text-decoration: none !important;
+}
+
+.nav-panel-text:hover {
+    text-decoration: underline !important;
+}
+
+/* ---------------------------------- */
+/* Loaders */
+
+#loader-container {
+    position: fixed;
+    background-color: rgba(0.35, 0.35, 0.35, 0.3);
+    width: 100vw;
+    min-height: 100vh;
+    height: 100%;
+    z-index: 2000;
+}
+
+#loader {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 1;
+    width: 60px;
+    height: 60px;
+    margin: -76px 0 0 -76px;
+}
+
+/* ---------------------------------- */
+
+.input-no-highlight:focus {
+    outline: none !important;
+}
+
+/* ---------------------------------- */

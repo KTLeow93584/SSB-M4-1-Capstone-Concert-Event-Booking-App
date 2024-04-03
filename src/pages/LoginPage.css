@@ -1,0 +1,23 @@
+/* ========================= */
+
+.login-header {
+    color: #7b8c8d !important;
+}
+
+.login-container {
+    background-color: #ecf0f1 !important;
+}
+
+.login-form-card {
+    box-shadow: 7.5px 5px 15px rgb(0, 0, 0, 0.4) !important;
+}
+
+.login-link {
+    text-decoration: none !important;
+}
+
+.login-link:hover {
+    text-decoration: underline !important;
+}
+
+/* ========================= */
