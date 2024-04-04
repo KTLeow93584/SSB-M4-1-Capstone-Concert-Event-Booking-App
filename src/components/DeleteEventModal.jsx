@@ -30,7 +30,7 @@ export default function DeleteEventModal({ show, event, onCloseModalCallback, on
                 onLoadingEnd("Global");
 
                 // On Promise Rejected/Failed, Error Exception.
-                if (action.error) {
+                if (action.payload.error) {
                     // Debug
                     console.log("[On Event Deletion Failed] Payload.", action.payload);
 

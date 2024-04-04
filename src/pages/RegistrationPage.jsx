@@ -71,8 +71,8 @@ function RegistrationForm() {
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
-    const [doesPasswordsMatch, setDoesPasswordMatch] = useState(false);
-    const [isCorrectPasswordFormat, setIsCorrectPasswordFormat] = useState(false);
+    const [doesPasswordsMatch, setDoesPasswordMatch] = useState(true);
+    const [isCorrectPasswordFormat, setIsCorrectPasswordFormat] = useState(true);
 
     const [isSocialRegistration, setIsSocialRegistration] = useState(false);
     const [socialPlatform, setSocialPlatform] = useState("");
@@ -215,12 +215,12 @@ function RegistrationForm() {
         };
 
         // Debug
-        console.log("Sign Up Event", requestBody);
+        //console.log("Sign Up Event", requestBody);
 
         dispatch(register(requestBody)).then(
             (action) => {
                 // On Promise Rejected/Failed, Error Exception.
-                if (action.error) {
+                if (action.payload.error) {
                     onLoadingEnd("Global");
 
                     // Debug
@@ -243,12 +243,12 @@ function RegistrationForm() {
                     setCountryCodeIndex(0);
 
                     setOrganizationName("");
-                    setFirstName("");
-                    setLastName("");
+                    setName("");
 
                     setOrganizationRegID("");
-                    setNRIC("");
+                    setNRIC("")
 
+                    alert("Registration Successful. You can now login!");
                     navigate("/login");
                 }
             }

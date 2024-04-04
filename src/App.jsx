@@ -16,11 +16,11 @@ import UserAuth from './auths/UserAuth.jsx';
 
 import Home from './pages/Home.jsx';
 import LoginPage from './pages/LoginPage.jsx';
+import ProfilePage from './pages/ProfilePage.jsx';
 import RegistrationPage from './pages/RegistrationPage.jsx';
-import AuthPage from './pages/AuthPage.jsx';
 
 import Dashboard from './pages/Dashboard.jsx';
-import EditProfile from './pages/EditProfile.jsx';
+import EditProfile from './pages/ProfilePage.jsx';
 import NetErrorPage from './pages/NetErrorPage.jsx';
 
 import AddNewEvent from './pages/AddNewEvent.jsx';
@@ -88,6 +88,8 @@ function App() {
           // Debug
           //console.log("[Who Am I Verification Successful - Start of App Lifespan] Result.", result);
 
+          // NOTE: We're using event dispatch instead of directly calling redux's dispatch action
+          // Because "App.jsx" is not part of the Redux Provider's scope.
           window.dispatchEvent(new CustomEvent("User Identified", {
             detail: {
               client_data: {
@@ -133,12 +135,19 @@ function App() {
                 {/* ------------------------- */}
                 {/* Default Landing Pages */}
                 <Route index element={<Home />} />
+                <Route path="/home" element={<Home />} />
 
                 <Route element={
                   <UserAuth>
                     <Dashboard />
                   </UserAuth>
                 } path="/dashboard" />
+
+                <Route element={
+                  <UserAuth>
+                    <ProfilePage />
+                  </UserAuth>
+                } path="/profile" />
 
                 <Route element={
                   <UserAuth>
@@ -170,7 +179,7 @@ function App() {
                   <NetErrorPage />
                 } path="/error" />
                 {/* ------------------------- */}
-                <Route path="/*" element={<AuthPage />} />
+                <Route path="/*" element={<LoginPage />} />
               </Route>
             </Routes>
           </PersistGate>

@@ -176,7 +176,7 @@ export default function ModifyEvent() {
         })).then(
             (action) => {
                 // On Promise Rejected/Failed, Error Exception.
-                if (action.error) {
+                if (action.payload.error) {
                     onLoadingEnd("Global");
 
                     // Debug

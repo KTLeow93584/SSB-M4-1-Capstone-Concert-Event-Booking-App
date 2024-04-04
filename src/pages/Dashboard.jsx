@@ -62,7 +62,7 @@ export default function Dashboard() {
         dispatch(fetchEventsUser()).then(
             (action) => {
                 // On Promise Rejected/Failed, Error Exception.
-                if (action.error) {
+                if (action.payload.error) {
                     onLoadingEnd("Global");
 
                     // Debug
@@ -182,7 +182,7 @@ function EventItem({ event, onModifyEventCallback, onDeleteEventCallback, onShow
                     <Row className="w-100">
                         <Col className="col-6">
                             <p className="my-0 py-0">
-                                <span className="fw-bold">Organiser</span>: {event.organiser_first_name + " " + event.organiser_last_name}
+                                <span className="fw-bold">Organiser</span>: {event.organiser_name}
                             </p>
                             <p className="my-0 py-0">
                                 <span className="fw-bold">Contact (Email)</span>: {event.organiser_email}
@@ -195,13 +195,12 @@ function EventItem({ event, onModifyEventCallback, onDeleteEventCallback, onShow
                             <p className="my-0 py-0">
                                 <span className="fw-bold">Coordinating Staff</span>:
                                 <span> </span>
-                                <span>{(event.staff_first_name && event.staff_last_name) ?
-                                    (event.staff_first_name + " " + event.staff_last_name) : "N/A"}</span>
+                                <span>{event.staff_name ? event.staff_name : "N/A"}</span>
                             </p>
                             <p className="my-0 py-0">
                                 <span className="fw-bold">Contact (Email)</span>:
                                 <span> </span>
-                                <span>{event.staff_email ? (event.staff_email) : "N/A"}</span>
+                                <span>{event.staff_email ? event.staff_email : "N/A"}</span>
                             </p>
                             <p className="my-0 py-0">
                                 <span className="fw-bold">Contact (Phone Number)</span>:

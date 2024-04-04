@@ -4,7 +4,7 @@ import axios from "axios";
 import { networkErrorCodeMessages, errorNoAuthEventName, errorServerEventName } from '../data/error-loggers.js';
 import { onLoadingEnd } from '../data/loaders.js';
 // ====================================================================
-const inhouseServerMainURL = "https://4716e73d-e976-4758-a5c8-601b214fee20-00-2fjqcn2tg03g6.riker.replit.dev/";
+const inhouseServerMainURL = "https://ff1d8d65-2da6-4c11-8325-9cf53e4363f2-00-2urc1aogcax1k.spock.replit.dev/";
 // ====================================================================
 const sessionTokenStorageName = "session-id-ror-event-host";
 // ====================================================================

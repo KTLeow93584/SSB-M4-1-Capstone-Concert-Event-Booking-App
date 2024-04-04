@@ -40,11 +40,11 @@
 /* ---------------------------------- */
 /* Navigation Panel Elements */
 
-.nav-panel-text {
+.nav-panel-link {
     text-decoration: none !important;
 }
 
-.nav-panel-text:hover {
+.nav-panel-link:hover {
     text-decoration: underline !important;
 }
 

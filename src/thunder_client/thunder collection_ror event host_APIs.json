@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "RoR APIs",
-    "dateExported": "2024-04-03T22:10:01.146Z",
+    "dateExported": "2024-04-04T01:07:15.918Z",
     "version": "1.1",
     "folders": [],
     "requests": [
@@ -154,6 +154,57 @@
                 }
             ],
             "params": [],
+            "tests": []
+        },
+        {
+            "_id": "9ff82d7e-c89a-4b78-b65b-fa973a1d3a59",
+            "colId": "b1eab066-4e39-4201-85bb-8872d8c65b55",
+            "containerId": "",
+            "name": "Get User Profile Info",
+            "url": "{{ror_url}}/profile",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2024-04-04T00:53:11.958Z",
+            "modified": "2024-04-04T00:53:38.032Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{JWToken}}"
+                },
+                {
+                    "name": "Device",
+                    "value": "{{device-id}}"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "0ff0b18d-46ea-4573-917e-80ded20bd7d2",
+            "colId": "b1eab066-4e39-4201-85bb-8872d8c65b55",
+            "containerId": "",
+            "name": "Update User Profile Info",
+            "url": "{{ror_url}}/profile",
+            "method": "PUT",
+            "sortNum": 40000,
+            "created": "2024-04-04T00:54:17.677Z",
+            "modified": "2024-04-04T01:06:55.047Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{JWToken}}"
+                },
+                {
+                    "name": "Device",
+                    "value": "{{device-id}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"Dummy Staff ABCDEF\",\n  \"profile_picture\": null\n}",
+                "form": []
+            },
             "tests": []
         }
     ]

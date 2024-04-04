@@ -107,7 +107,7 @@ function LoginForm({ navigate }) {
         dispatch(login({ email, password })).then(
             (action) => {
                 // On Promise Rejected/Failed, Error Exception.
-                if (action.error) {
+                if (action.payload.error) {
                     onLoadingEnd("Global");
 
                     // Debug
@@ -136,24 +136,27 @@ function LoginForm({ navigate }) {
         const user = res.user;
 
         // Debug
-        console.log("[On Google Login Successful] Result.", res);
         //console.log("[On Google Login Successful] User.", user);
-        /*
+
         onLoadingStart("Global");
 
         dispatch(login({
             email: user.email,
-            social_name: user.displayName,
             social_provider: res.providerId,
             social_uid: user.uid,
-            social_profile_image: user.photoURL
+            social_access_token: user.accessToken,
+            social_refresh_token: user.refreshToken
         })).then((action) => {
             // On Promise Rejected/Failed, Error Exception.
-            if (action.error) {
+            if (action.payload.error) {
                 onLoadingEnd("Global");
 
                 // Debug
                 //console.log("[Login Failed] Payload - Google.", action.payload);
+
+                const error = action.payload.error;
+                if (error.code === "no-user-found")
+                    navigate("/register");
             }
             // On Promise Fulfilled
             else {
@@ -164,7 +167,6 @@ function LoginForm({ navigate }) {
                 onSuccessfulLoginCallback(user.accessToken);
             }
         });
-        */
     }
     // ====================
     const facebookProvider = new FacebookAuthProvider();
@@ -179,21 +181,26 @@ function LoginForm({ navigate }) {
 
         dispatch(login({
             email: user.email,
-            social_name: user.displayName,
             social_provider: res.providerId,
-            social_profile_image: user.photoURL
+            social_uid: user.uid,
+            social_access_token: user.accessToken,
+            social_refresh_token: user.refreshToken
         })).then((action) => {
             // On Promise Rejected/Failed, Error Exception.
-            if (action.error) {
+            if (action.payload.error) {
                 onLoadingEnd("Global");
 
                 // Debug
-                //console.log("[Login Failed - Facebook] Payload.", action.payload);
+                console.log("[Login Failed - Facebook] Payload.", action.payload);
+
+                const error = action.payload.error;
+                if (error.code === "no-user-found")
+                    navigate("/register");
             }
             // On Promise Fulfilled
             else {
                 // Debug
-                //console.log("[Login Successful - Facebook] Payload.", action.payload);
+                console.log("[Login Successful - Facebook] Payload.", action.payload);
 
                 updateSessionToken(user.accessToken);
                 onSuccessfulLoginCallback(user.accessToken);
