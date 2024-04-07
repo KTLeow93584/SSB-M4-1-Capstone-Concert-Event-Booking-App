@@ -1,0 +1,11 @@
+/* ========================= */
+
+.description-link {
+    text-decoration: none !important;
+}
+
+.description-link:hover {
+    text-decoration: underline !important;
+}
+
+/* ========================= */

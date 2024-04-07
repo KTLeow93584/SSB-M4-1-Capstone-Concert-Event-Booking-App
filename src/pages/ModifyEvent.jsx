@@ -14,7 +14,7 @@ import Image from 'react-bootstrap/Image';
 
 import VenuePreviewModal from '../components/VenuePreviewModal.jsx';
 
-import { callServerAPI } from '../apis/authApi.jsx';
+import { callServerAPI } from '../apis/apiAxiosFetch.jsx';
 import { updateEvent } from '../feature/events/eventsSlice.jsx';
 
 import { onLoadingStart, onLoadingEnd } from '../data/loaders.js';

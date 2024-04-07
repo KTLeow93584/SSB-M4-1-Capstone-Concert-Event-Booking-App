@@ -1,8 +1,7 @@
 // =========================================
-import { FacebookAuthProvider, GoogleAuthProvider, signInWithPopup, getAuth } from 'firebase/auth';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
@@ -14,6 +13,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
 import Image from 'react-bootstrap/Image';
 
+import { onFacebookAuthPrompt, onGoogleAuthPrompt } from '../apis/authAPIHandler.jsx';
 import { onLoadingStart, onLoadingEnd } from '../data/loaders.js';
 import { register } from '../feature/activeUser/activeUserSlice.jsx';
 
@@ -52,32 +52,36 @@ function RegistrationForm() {
     // ====================
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
-    const auth = getAuth();
+    const location = useLocation();
     // ====================
     const [isOrganization, setIsOrganization] = useState(false);
 
     const [organizationName, setOrganizationName] = useState("");
-    const [name, setName] = useState("");
+    const [name, setName] = useState((location.state && location.state.name) ? location.state.name : "");
     // ====================
-    const [email, setEmail] = useState("");
+    const [email, setEmail] = useState((location.state && location.state.email) ? location.state.email : "");
     const [countryCodeIndex, setCountryCodeIndex] = useState(0);
     const [contactNumber, setContactNumber] = useState("");
 
-    const [image, setImage] = useState("");
+    const [image, setImage] = useState((location.state && location.state.image) ? location.state.image : "");
     const imageRef = useRef();
     const [isCorrectImageFormat, setIsCorrectImageFormat] = useState(true);
 
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
-    const [doesPasswordsMatch, setDoesPasswordMatch] = useState(true);
+    const [doPasswordsMatch, setDoPasswordsMatch] = useState(true);
     const [isCorrectPasswordFormat, setIsCorrectPasswordFormat] = useState(true);
 
-    const [isSocialRegistration, setIsSocialRegistration] = useState(false);
-    const [socialPlatform, setSocialPlatform] = useState("");
-    const [socialProvider, setSocialProvider] = useState("");
-    const [socialUID, setSocialUID] = useState("");
+    const [isEmailAlreadyInUse, setIsEmailAlreadyInUse] = useState(false);
+    const [isFormIncomplete, setIsFormIncomplete] = useState(false);
+    const [isFormAmbiguous, setIsFormAmbiguous] = useState(false);
+    const [errorSocialsMessage, setErrorSocialsMessage] = useState("");
+
+    const [isSocialRegistration, setIsSocialRegistration] = useState(location.state !== null);
+    const [socialPlatform, setSocialPlatform] = useState((location.state && location.state.socialPlatform) ? location.state.socialPlatform : "");
+    const [socialProvider, setSocialProvider] = useState((location.state && location.state.socialProvider) ? location.state.socialProvider : "");
+    const [socialUID, setSocialUID] = useState((location.state && location.state.socialUID) ? location.state.socialUID : "");
 
     const onSwitchToOrganizationRegistration = () => setIsOrganization(true);
     const onSwitchToIndividualRegistration = () => setIsOrganization(false);
@@ -121,10 +125,10 @@ function RegistrationForm() {
     const [organizationRegID, setOrganizationRegID] = useState("");
     const [nric, setNRIC] = useState("");
     // ====================
-    function doPasswordsMatch() {
+    function isPasswordMatched() {
         const match = password === passwordConfirmation;
 
-        setDoesPasswordMatch(match);
+        setDoPasswordsMatch(match);
         return match;
     }
 
@@ -181,7 +185,9 @@ function RegistrationForm() {
     const onRegister = async (event) => {
         event.preventDefault();
 
-        const passValidations = doPasswordsMatch() & doPasswordsMeetCriteria();
+        setIsEmailAlreadyInUse(false);
+
+        const passValidations = isPasswordMatched() & doPasswordsMeetCriteria();
         if (!passValidations)
             return;
 
@@ -224,12 +230,13 @@ function RegistrationForm() {
                     onLoadingEnd("Global");
 
                     // Debug
-                    //console.log("[On Registration Failed] Payload.", action.payload);
+                    console.log("[On Registration Failed] Payload.", action.payload);
+                    onRegisterFailed(action.payload.error);
                 }
                 // On Promise Fulfilled
                 else {
                     // Debug
-                    //console.log("[On Registration Successful] Payload.", action.payload);
+                    console.log("[On Registration Successful] Payload.", action.payload);
 
                     onLoadingEnd("Global");
 
@@ -253,51 +260,81 @@ function RegistrationForm() {
                 }
             }
         );
-    }
+    };
 
     // Google (Same process as login, first login -> Automatically register)
-    const googleProvider = new GoogleAuthProvider();
     const onRegisterGoogle = async (event) => {
         event.preventDefault();
-        const res = await signInWithPopup(auth, googleProvider);
-        const user = res.user;
+        setErrorSocialsMessage("");
 
-        // Debug
-        //console.log("[On Google Registration Successful] User.", user);
-
-        setEmail(user.email);
-        setName(user.displayName);
-        setOrganizationName(user.displayName);
-        setImage(user.photoURL);
-
-        setSocialProvider(res.providerId);
-        setSocialUID(user.uid);
-        setIsSocialRegistration(true);
-        setSocialPlatform("Google");
-        imageRef.current.value = "";
-    }
+        onGoogleAuthPrompt(
+            // On Successful Callback
+            (result) => onSocialRegistrationSuccessful("Google", result.user, result.providerId),
+            // On Failed Callback
+            onSocialRegistrationFailed
+        );
+    };
 
     // Facebook (Same process as login, first login -> Automatically register)
-    const facebookProvider = new FacebookAuthProvider();
     const onRegisterFacebook = async (event) => {
         event.preventDefault();
-        const res = await signInWithPopup(auth, facebookProvider);
-        const user = res.user;
+        setErrorSocialsMessage("");
 
-        // Debug
-        //console.log("[On Facebook Registration Successful] User.", user);
+        onFacebookAuthPrompt(
+            // On Successful Callback
+            (result) => onSocialRegistrationSuccessful("Facebook", result.user, result.providerId),
+            // On Failed Callback
+            onSocialRegistrationFailed
+        );
+    };
 
+    const onSocialRegistrationSuccessful = (socialPlatform, user, providerId) => {
         setEmail(user.email);
         setName(user.displayName);
         setOrganizationName(user.displayName);
         setImage(user.photoURL);
 
-        setSocialProvider(res.providerId);
+        setSocialProvider(providerId);
         setSocialUID(user.uid);
         setIsSocialRegistration(true);
-        setSocialPlatform("Facebook");
+        setSocialPlatform(socialPlatform);
+
+        setIsEmailAlreadyInUse(false);
+
         imageRef.current.value = "";
-    }
+    };
+
+    const onSocialRegistrationFailed = (errorCode) => {
+        // Handling different error cases.
+        switch (errorCode) {
+            // User already signed in with a different platform/credential.
+            case "auth/account-exists-with-different-credential":
+                setErrorSocialsMessage("User already exists with a different login method. Please try again with a different approach.");
+                break;
+            case "auth/cancelled-popup-request":
+            default:
+        }
+    };
+
+    const onRegisterFailed = (error) => {
+        const errorCode = error.code;
+
+        switch (errorCode) {
+            case "incomplete-form":
+                setIsFormIncomplete(true);
+                break;
+            case "ambiguous-registration-type":
+                setIsFormAmbiguous(true);
+                break;
+            case "user-already-exist":
+                setIsEmailAlreadyInUse(true);
+                break;
+            case "incorrect-password-format":
+                setIsCorrectPasswordFormat(false);
+                break;
+            default:
+        }
+    };
     // ====================
     return (
         <Col className="col-md-6 col-12 d-flex flex-column align-items-center justify-content-center">
@@ -356,8 +393,24 @@ function RegistrationForm() {
                             <FormControl id="email" type="email" readonly={isSocialRegistration}
                                 placeholder="Email Address"
                                 value={email} autocomplete={true} isRequired={true}
-                                onChangeCallback={setEmail} />
+                                onChangeCallback={(value) => {
+                                    setEmail(value);
+
+                                    if (isEmailAlreadyInUse)
+                                        setIsEmailAlreadyInUse(false);
+                                }} />
                         </div>
+                        {/* ------------------------- */}
+                        {/* Registration Error - Email already in use */}
+                        {
+                            isEmailAlreadyInUse ? (
+                                <div className="d-flex mt-3 mx-5">
+                                    <p className="text-danger" style={{ fontSize: "0.8em" }}>
+                                        • The email, {email} is already in use.
+                                    </p>
+                                </div>
+                            ) : null
+                        }
                         {/* ------------------------- */}
                         {/* Password (+ Confirmation) */}
                         <div className="d-flex flex-column mb-2 mx-5">
@@ -365,16 +418,35 @@ function RegistrationForm() {
                                 <FormControlPassword id="password"
                                     placeholder="Password"
                                     value={password} autocomplete={true}
-                                    onChangeCallback={setPassword} />
+                                    onChangeCallback={(value) => {
+                                        setPassword(value);
+
+                                        if (!isCorrectPasswordFormat)
+                                            setIsCorrectPasswordFormat(true);
+                                        
+                                        if (!doPasswordsMatch)
+                                            setDoPasswordsMatch(true);
+                                    }}
+                                />
                             </div>
 
                             <div className="mb-2">
                                 <FormControlPassword id="password-confirmation"
                                     placeholder="Confirm Your Password"
                                     value={passwordConfirmation} autocomplete={true}
-                                    onChangeCallback={setPasswordConfirmation} />
+                                    onChangeCallback={(value) => {
+                                        setPasswordConfirmation(value);
+
+                                        if (!isCorrectPasswordFormat)
+                                            setIsCorrectPasswordFormat(true);
+
+                                        if (!doPasswordsMatch)
+                                            setDoPasswordsMatch(true);
+                                    }}
+                                />
                             </div>
 
+                            {/* Password Criteria */}
                             <div className="d-flex flex-column rounded mb-2 px-2 py-1">
                                 <Form.Text className="fw-bold">Requirements for password: </Form.Text>
                                 <Form.Text className="fw-normal">1. 8 characters long. </Form.Text>
@@ -383,19 +455,19 @@ function RegistrationForm() {
 
                             {/* Mismatched Password Error */}
                             {
-                                (!doesPasswordsMatch) ? (
-                                    <Form.Label className="login-text text-danger ms-1">
-                                        Both the Password and Password Confirmation fields do not match
-                                    </Form.Label>
+                                (!doPasswordsMatch) ? (
+                                    <p className="text-danger ms-1 my-0 py-0" style={{ fontSize: "0.8em" }}>
+                                        • Both the Password and Password Confirmation fields do not match
+                                    </p>
                                 ) : null
                             }
 
                             {/* Password Format */}
                             {
                                 (!isCorrectPasswordFormat) ? (
-                                    <Form.Label className="login-text text-danger ms-1">
-                                        The current password does not meet the criteria.
-                                    </Form.Label>
+                                    <p className="text-danger ms-1 my-0 py-0" style={{ fontSize: "0.8em" }}>
+                                        • The current password does not meet the criteria.
+                                    </p>
                                 ) : null
                             }
                         </div>
@@ -482,18 +554,42 @@ function RegistrationForm() {
                                 value={isOrganization ? organizationRegID : nric} autocomplete={false} isRequired={true}
                                 onChangeCallback={isOrganization ? setOrganizationRegID : setNRIC} />
                         </div>
+                        {
+                            isFormAmbiguous ? (
+                                <div className="d-flex mt-3">
+                                    <p className="text-danger" style={{ fontSize: "0.8em" }}>
+                                        • User cannot register and represent him/herself as both an individual and
+                                        an organization under the same registration.
+                                    </p>
+                                </div>
+                            ) : null
+                        }
                         {/* ------------------------- */}
                         <hr />
                         {/* ------------------------- */}
+                        {/* Form Submission */}
                         <div className="d-flex mb-3 justify-content-center mt-3 mx-5">
                             <Button type="submit" className="w-100">
                                 Register
                             </Button>
                         </div>
+                        {/* ------------------------- */}
+                        {
+                            isFormIncomplete ? (
+                                <div className="d-flex mt-3 mx-5">
+                                    <p className="text-danger" style={{ fontSize: "0.8em" }}>
+                                        • There were missing required informations in your previous submissions.
+                                        All forms marked with an asterisk (*) must be filled.
+                                    </p>
+                                </div>
+                            ) : null
+                        }
                     </Form>
                 </Card.Body>
                 <Card.Footer className="d-flex flex-column align-items-start justify-content-center">
-                    <p className="fs-6 login-header text-center">
+                    {/* ------------------------- */}
+                    {/* Social Platform Registration Buttons (Google, Facebook) */}
+                    <p className="fs-6 registration-header text-center">
                         List of Supported Social Providers to register:
                     </p>
                     <div className="d-flex w-100 justify-content-evenly">
@@ -513,6 +609,18 @@ function RegistrationForm() {
                             <span className="text-light">Facebook</span>
                         </Button>
                     </div>
+                    {/* ------------------------- */}
+                    {/* Registration Error Message Log -> Social Platforms */}
+                    {
+                        errorSocialsMessage ? (
+                            <div className="d-flex mt-3">
+                                <p className="text-danger" style={{ fontSize: "0.8em" }}>
+                                    • {errorSocialsMessage}
+                                </p>
+                            </div>
+                        ) : null
+                    }
+                    {/* ------------------------- */}
                 </Card.Footer>
             </Card>
         </Col>
@@ -527,9 +635,13 @@ function FormControl({ id, labelDesc, type, placeholder, value, autocomplete, re
                     <Form.Label htmlFor={id} className="me-3" style={{ width: "15%" }}>
                         {labelDesc + (isRequired ? "*" : "")}:
                     </Form.Label>
-                ) : null
+                ) : (
+                    <Form.Label htmlFor={id} />
+                )
             }
-            <Form.Control id={id} required={isRequired} disabled={readonly}
+            <Form.Control id={id}
+                required={isRequired}
+                disabled={readonly}
                 type={type}
                 placeholder={placeholder + (isRequired ? "*" : "")}
                 autoComplete={autocomplete ? "true" : "false"}
@@ -556,7 +668,9 @@ function FormControlPassword({ id, labelDesc, placeholder, value, autocomplete, 
                     <Form.Label htmlFor={id} className="me-3" style={{ width: "15%" }}>
                         {labelDesc}*:
                     </Form.Label>
-                ) : null
+                ) : (
+                    <Form.Label htmlFor={id} />
+                )
             }
             <Form.Control id={id} required
                 ref={passwordFieldRef}
@@ -579,17 +693,23 @@ function FormControlPassword({ id, labelDesc, placeholder, value, autocomplete, 
 
 function FormControlFile({ id, labelDesc, accept, onChangeCallback, htmlRef = null }) {
     return (
-        <>
-            <Form.Label htmlFor={id} className="me-3">
-                {labelDesc}:
-            </Form.Label>
+        <div>
+            {
+                labelDesc && labelDesc.trim().length > 0 ? (
+                    <Form.Label htmlFor={id} className="me-3">
+                        {labelDesc}:
+                    </Form.Label>
+                ) : (
+                    <Form.Label htmlFor={id} />
+                )
+            }
             <Form.Control id={id}
                 ref={htmlRef}
                 type="file"
                 accept={accept}
                 onChange={(event) => onChangeCallback ? onChangeCallback(event) : null}
             />
-        </>
+        </div>
     );
 }
 // =========================================

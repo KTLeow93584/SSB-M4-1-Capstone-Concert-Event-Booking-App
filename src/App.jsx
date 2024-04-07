@@ -18,6 +18,9 @@ import Home from './pages/Home.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import ProfilePage from './pages/ProfilePage.jsx';
 import RegistrationPage from './pages/RegistrationPage.jsx';
+import VerifyEmailPage from './pages/VerifyEmailPage.jsx';
+import ForgetPasswordPage from './pages/ForgetPasswordPage.jsx';
+import ResetPasswordPage from './pages/ResetPasswordPage.jsx';
 
 import Dashboard from './pages/Dashboard.jsx';
 import EditProfile from './pages/ProfilePage.jsx';
@@ -26,11 +29,10 @@ import NetErrorPage from './pages/NetErrorPage.jsx';
 import AddNewEvent from './pages/AddNewEvent.jsx';
 import ModifyEvent from './pages/ModifyEvent.jsx';
 // ==============================================
-
 import './App.css';
 
 import { store, persistor } from './store.jsx';
-import { sessionTokenStorageName, updateDeviceID, callServerAPI, updateSessionToken } from './apis/authApi.jsx';
+import { sessionTokenStorageName, updateDeviceID, callServerAPI, updateSessionToken } from './apis/apiAxiosFetch.jsx';
 
 import { AuthProvider } from './contexts/AuthProvider.jsx';
 
@@ -76,7 +78,7 @@ function App() {
     window.addEventListener(errorNoAuthEventName, onUnauthorizationDetectedCallback);
     window.addEventListener(errorServerEventName, onServerErrorDetectedCallback);
 
-    if (accessToken) {
+    if (accessToken && accessToken !== "null") {
       updateSessionToken(accessToken);
 
       onLoadingStart("Global");
@@ -174,6 +176,24 @@ function App() {
                     <RegistrationPage />
                   </GuestAuth>
                 } path="/register" />
+
+                <Route element={
+                  <GuestAuth>
+                    <VerifyEmailPage />
+                  </GuestAuth>
+                } path="/verify/:token" />
+
+                <Route element={
+                  <GuestAuth>
+                    <ForgetPasswordPage />
+                  </GuestAuth>
+                } path="/password/forget" />
+
+                <Route element={
+                  <GuestAuth>
+                    <ResetPasswordPage />
+                  </GuestAuth>
+                } path="/password/reset/:token" />
 
                 <Route element={
                   <NetErrorPage />

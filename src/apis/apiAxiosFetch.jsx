@@ -91,7 +91,7 @@ export async function callServerAPI(subURL, method = "GET", body = {},
                     messages: networkErrorCodeMessages[errorObj.status] ?? "Undocumented Network Error."
                 });
 
-            if (errorObj.status === 401)
+            if (errorObj.status === 401 && errorObj.code === "unauthorized-access")
                 window.dispatchEvent(new CustomEvent(errorNoAuthEventName));
             if (errorObj.status === 500)
                 window.dispatchEvent(new CustomEvent(errorServerEventName));

@@ -1,5 +1,4 @@
 // =========================================
-import { FacebookAuthProvider, GoogleAuthProvider, signInWithPopup, getAuth } from 'firebase/auth';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -13,16 +12,17 @@ import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import Image from 'react-bootstrap/Image';
 
-import { updateSessionToken } from "../apis/authApi.jsx";
+import { updateSessionToken } from "../apis/apiAxiosFetch.jsx";
 
 import SessionTimeoutModal from '../components/SessionTimeoutModal.jsx';
 
+import { onFacebookAuthPrompt, onGoogleAuthPrompt } from '../apis/authAPIHandler.jsx';
 import { onLoadingStart, onLoadingEnd } from '../data/loaders.js';
 import { errorNoAuthEventName } from '../data/error-loggers.js';
 import { login } from '../feature/activeUser/activeUserSlice.jsx';
 
 import googleIcon from '../assets/images/google.webp';
-import "./LoginPage.css";
+import './LoginPage.css';
 // =========================================
 export default function LoginPage() {
     // ====================
@@ -82,8 +82,6 @@ function LoginHeader() {
 function LoginForm({ navigate }) {
     // ====================
     const dispatch = useDispatch();
-
-    const auth = getAuth();
     // ====================
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -96,10 +94,13 @@ function LoginForm({ navigate }) {
 
         passwordFieldRef.current.type = newState ? "text" : "password";
     }
+
+    const [errorMessage, setErrorMessage] = useState("");
     // ====================
     // Login
     const onLogin = async (event) => {
         event.preventDefault();
+        setErrorMessage("");
         onLoadingStart("Global");
 
         // Debug
@@ -111,7 +112,9 @@ function LoginForm({ navigate }) {
                     onLoadingEnd("Global");
 
                     // Debug
-                    //console.log("[Login Failed] Payload.", action.payload)
+                    console.log("[Login Failed] Payload.", action.payload)
+
+                    onFailedLoginCallback(action.payload.error, null);
                 }
                 // On Promise Fulfilled
                 else {
@@ -129,91 +132,103 @@ function LoginForm({ navigate }) {
         );
     }
 
-    const googleProvider = new GoogleAuthProvider();
+    const onSocialLogin = (platformName, providerId, user) => {
+        onLoadingStart("Global");
+
+        dispatch(login({
+            email: user.email,
+            social_provider: providerId,
+            social_uid: user.uid,
+            social_access_token: user.accessToken,
+            social_refresh_token: user.refreshToken
+        })).then((action) => {
+            // On Promise Rejected/Failed, Error Exception.
+            if (action.payload.error) {
+                onLoadingEnd("Global");
+
+                // Debug
+                //console.log(`[Login Failed] Payload - ${platformName}.`, action.payload);
+
+                onFailedLoginCallback(action.payload.error, {
+                    email: user.email,
+                    name: user.displayName,
+                    image: user.photoURL,
+                    socialProvider: providerId,
+                    socialUID: user.uid,
+                    socialPlatform: platformName
+                });
+            }
+            // On Promise Fulfilled
+            else {
+                // Debug
+                //console.log(`[Login Successful] Payload - ${platformName}.`, action.payload);
+
+                updateSessionToken(user.accessToken);
+                onSuccessfulLoginCallback(user.accessToken);
+            }
+        });
+    };
+
+    const onSocialLoginFailed = (errorCode) => {
+        // Handling different error cases.
+        switch (errorCode) {
+            // User already signed in with a different platform/credential.
+            case "auth/account-exists-with-different-credential":
+                setErrorMessage("User already exists with a different login method. Please try again with a different approach.");
+                break;
+            case "auth/cancelled-popup-request":
+            default:
+        }
+    };
+
     const onLoginGoogle = async (event) => {
         event.preventDefault();
-        const res = await signInWithPopup(auth, googleProvider);
-        const user = res.user;
+        setErrorMessage("");
 
-        // Debug
-        //console.log("[On Google Login Successful] User.", user);
-
-        onLoadingStart("Global");
-
-        dispatch(login({
-            email: user.email,
-            social_provider: res.providerId,
-            social_uid: user.uid,
-            social_access_token: user.accessToken,
-            social_refresh_token: user.refreshToken
-        })).then((action) => {
-            // On Promise Rejected/Failed, Error Exception.
-            if (action.payload.error) {
-                onLoadingEnd("Global");
-
-                // Debug
-                //console.log("[Login Failed] Payload - Google.", action.payload);
-
-                const error = action.payload.error;
-                if (error.code === "no-user-found")
-                    navigate("/register");
-            }
-            // On Promise Fulfilled
-            else {
-                // Debug
-                console.log("[Login Successful - Google] Payload.", action.payload);
-
-                updateSessionToken(user.accessToken);
-                onSuccessfulLoginCallback(user.accessToken);
-            }
-        });
+        onGoogleAuthPrompt(
+            // On Successful Callback
+            (result) => onSocialLogin("Google", result.providerId, result.user),
+            // On Failed Callback
+            onSocialLoginFailed
+        );
     }
     // ====================
-    const facebookProvider = new FacebookAuthProvider();
     const onLoginFacebook = async (event) => {
         event.preventDefault();
-        const res = await signInWithPopup(auth, facebookProvider);
-        const user = res.user;
+        setErrorMessage("");
 
-        // Debug
-        //console.log("[On Facebook Login Successful] User.", user);
-        onLoadingStart("Global");
-
-        dispatch(login({
-            email: user.email,
-            social_provider: res.providerId,
-            social_uid: user.uid,
-            social_access_token: user.accessToken,
-            social_refresh_token: user.refreshToken
-        })).then((action) => {
-            // On Promise Rejected/Failed, Error Exception.
-            if (action.payload.error) {
-                onLoadingEnd("Global");
-
-                // Debug
-                console.log("[Login Failed - Facebook] Payload.", action.payload);
-
-                const error = action.payload.error;
-                if (error.code === "no-user-found")
-                    navigate("/register");
-            }
-            // On Promise Fulfilled
-            else {
-                // Debug
-                console.log("[Login Successful - Facebook] Payload.", action.payload);
-
-                updateSessionToken(user.accessToken);
-                onSuccessfulLoginCallback(user.accessToken);
-            }
-        });
+        onFacebookAuthPrompt(
+            // On Successful Callback
+            (result) => onSocialLogin("Facebook", result.providerId, result.user),
+            // On Failed Callback
+            onSocialLoginFailed
+        );
     }
     // ====================
     const onSuccessfulLoginCallback = (token) => {
         localStorage.setItem("session-id-ror-event-host", token);
         navigate("/dashboard");
     };
+
+    const onFailedLoginCallback = (error, user = null) => {
+        // Debug
+        console.log("[Failed Login] Error.", error);
+
+        switch (error.code) {
+            case "no-user-found":
+                navigate("/register", user ? { state: { ...user } } : null);
+                break;
+            case "incorrect-login-method":
+                setErrorMessage("User already exists with a different login method. Please try again with a different approach.");
+                break;
+            case "incorrect-credentials":
+                setErrorMessage("Incorrect email/password combination.");
+                break;
+        }
+    };
     // ====================
     const onMoveToRegistration = () => navigate("/register");
+    const onMoveToForgetPassword = () => navigate("/password/forget");
     // ====================
     return (
         <Col className="col-md-6 col-12 d-flex flex-column align-items-center justify-content-center">
@@ -226,10 +241,9 @@ function LoginForm({ navigate }) {
                 </Card.Header>
                 <Card.Body className="mx-5">
                     <Form onSubmit={onLogin}>
-
                         {/* Credential: Email */}
                         <div className="d-flex mb-2 mt-3">
-                            <Form.Label htmlFor="email" className="me-3" />
+                            <Form.Label htmlFor="email" />
                             <Form.Control id="email" required autoComplete="true"
                                 type="email"
                                 value={email}
@@ -240,7 +254,7 @@ function LoginForm({ navigate }) {
 
                         {/* Credential: Password */}
                         <div className="d-flex mb-2">
-                            <Form.Label htmlFor="password" className="me-3" />
+                            <Form.Label htmlFor="password" />
                             <Form.Control id="password" required autoComplete="true"
                                 ref={passwordFieldRef}
                                 type="password"
@@ -252,6 +266,15 @@ function LoginForm({ navigate }) {
                                 <i className={`bi bi-eye-${showPassword ? "fill" : "slash-fill"}`}></i>
                             </Button>
                         </div>
+
+                        {/* Login Error Message Log */}
+                        {
+                            errorMessage ? (
+                                <div className="d-flex mb-2">
+                                    <p className="text-danger" style={{ fontSize: "0.8em" }}>• {errorMessage}</p>
+                                </div>
+                            ) : null
+                        }
 
                         {/* Terms of Service */}
                         <div className="mb-3">
@@ -276,9 +299,9 @@ function LoginForm({ navigate }) {
                             </Button>
                         </div>
 
-                        {/* Forgot Password Button */}
+                        {/* Forget Password Button */}
                         <div className="d-flex mb-3 justify-content-center">
-                            <Button variant="link" onClick={null} className="login-link w-100">
+                            <Button variant="link" onClick={onMoveToForgetPassword} className="login-link w-100">
                                 Forgot your password?
                             </Button>
                         </div>

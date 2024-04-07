@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-import { callServerAPI } from '../../apis/authApi.jsx';
+import { callServerAPI } from '../../apis/apiAxiosFetch.jsx';
 
 // Async thunk for fetching events as a user.
 export const fetchEventsUser = createAsyncThunk(

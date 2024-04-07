@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import { getSessionToken } from '../apis/authApi.jsx';
+import { getSessionToken } from '../apis/apiAxiosFetch.jsx';
 
 export default function RequireAuth({ children }) {
     const token = getSessionToken();

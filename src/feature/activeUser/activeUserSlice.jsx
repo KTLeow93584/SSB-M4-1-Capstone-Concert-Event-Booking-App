@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { callServerAPI } from '../../apis/authApi.jsx';
+import { callServerAPI } from '../../apis/apiAxiosFetch.jsx';
 
 // Async thunk for login.
 export const login = createAsyncThunk(
