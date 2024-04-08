@@ -72,7 +72,7 @@ export default function ResetPasswordPage() {
     };
     // ====================
     return (
-        <Container fluid style={{ flex: 1 }}>
+        <Container className="authentication-container" fluid style={{ flex: 1 }}>
             <Row className="mt-5">
                 <Col className="col-12 d-flex flex-column align-items-center">
                     {

@@ -122,35 +122,30 @@ function App() {
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <Routes>
+              {/* Append "Layout" component on top of all the following pages */}
               <Route path="/" element={<Layout />}>
                 {/* ------------------------- */}
-                {/* Modify User Info Page */}
-                <Route element={
-                  <UserAuth>
-                    <EditProfile />
-                  </UserAuth>
-                } path="/profile/edit" />
-                {/* ------------------------- */}
-                {/* View Events Page */}
-                {/* ------------------------- */}
-                {/* Create Events Page */}
-                {/* ------------------------- */}
-                {/* Default Landing Pages */}
-                <Route index element={<Home />} />
-                <Route path="/home" element={<Home />} />
-
+                {/* Dashboard (Main Page Redirect after Logged In) */}
                 <Route element={
                   <UserAuth>
                     <Dashboard />
                   </UserAuth>
                 } path="/dashboard" />
-
+                {/* ------------------------- */}
+                {/* User Profile Page(s) */}
                 <Route element={
                   <UserAuth>
                     <ProfilePage />
                   </UserAuth>
                 } path="/profile" />
 
+                <Route element={
+                  <UserAuth>
+                    <EditProfile />
+                  </UserAuth>
+                } path="/profile/edit" />
+                {/* ------------------------- */}
+                {/* Event Page(s) */}
                 <Route element={
                   <UserAuth>
                     <AddNewEvent />
@@ -164,7 +159,8 @@ function App() {
                     </ParamsAuth>
                   </UserAuth>
                 } path="/event/modify" />
-
+                {/* ------------------------- */}
+                {/* Authentication Pages */}
                 <Route element={
                   <GuestAuth>
                     <LoginPage />
@@ -194,12 +190,25 @@ function App() {
                     <ResetPasswordPage />
                   </GuestAuth>
                 } path="/password/reset/:token" />
-
+                {/* ------------------------- */}
+                {/* Error Page (Codebase will explicitly send user to this page
+                  * when server responds with a "500" code from API requests) 
+                  */}
                 <Route element={
                   <NetErrorPage />
                 } path="/error" />
                 {/* ------------------------- */}
-                <Route path="/*" element={<LoginPage />} />
+                {/* Default Landing Pages -> Home */}
+                <Route index element={<Home />} />
+
+                <Route element={
+                  <Home />
+                } path="/home" />
+
+                <Route element={
+                  <Home />
+                } path="/*" />
+                {/* ------------------------- */}
               </Route>
             </Routes>
           </PersistGate>

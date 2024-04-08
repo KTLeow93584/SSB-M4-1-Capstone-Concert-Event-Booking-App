@@ -1,5 +1,5 @@
 // =========================================
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -22,7 +22,7 @@ import "./RegistrationPage.css";
 // =========================================
 export default function RegistrationPage() {
     return (
-        <Container className="register-container" fluid style={{ flex: 1 }}>
+        <Container className="authentication-container" fluid style={{ flex: 1 }}>
             <Row className="my-5">
                 <RegistrationHeader />
                 <RegistrationForm />
@@ -423,7 +423,7 @@ function RegistrationForm() {
 
                                         if (!isCorrectPasswordFormat)
                                             setIsCorrectPasswordFormat(true);
-                                        
+
                                         if (!doPasswordsMatch)
                                             setDoPasswordsMatch(true);
                                     }}
@@ -558,8 +558,8 @@ function RegistrationForm() {
                             isFormAmbiguous ? (
                                 <div className="d-flex mt-3">
                                     <p className="text-danger" style={{ fontSize: "0.8em" }}>
-                                        • User cannot register and represent him/herself as both an individual and
-                                        an organization under the same registration.
+                                        • User cannot register and represent his her email as both an individual and organization
+                                        under a single registration.
                                     </p>
                                 </div>
                             ) : null

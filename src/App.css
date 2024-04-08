@@ -7,6 +7,10 @@
     min-height: 100vh;
 }
 
+.authentication-container {
+    background-color: #ecf0f1 !important;
+}
+
 /* ---------------------------------- */
 /* Socials Themes (Facebook, Google, etc.) */
 .facebook-container {

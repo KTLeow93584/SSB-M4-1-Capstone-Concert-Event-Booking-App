@@ -46,7 +46,7 @@ export default function LoginPage() {
     // ====================
     return (
         <>
-            <Container className="login-container" fluid style={{ flex: 1 }}>
+            <Container className="authentication-container" fluid style={{ flex: 1 }}>
                 <Row style={{ minHeight: "80vh" }}>
                     {/* --------------------------------------------- */}
                     {/* Left-side of the Login Page -> Header */}

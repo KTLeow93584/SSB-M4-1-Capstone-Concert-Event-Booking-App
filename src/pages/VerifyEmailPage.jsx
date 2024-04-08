@@ -65,7 +65,7 @@ export default function VerifyEmailPage() {
     }, [token]);
     // ================
     return (
-        <Container fluid style={{ flex: 1 }}>
+        <Container className="authentication-container" fluid style={{ flex: 1 }}>
             <Row className="my-5">
                 <Col className="col-12 d-flex flex-column align-items-center">
                     {
