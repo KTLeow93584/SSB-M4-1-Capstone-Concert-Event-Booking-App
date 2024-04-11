@@ -1,0 +1,53 @@
+/* ========================= */
+
+@keyframes move-arrow {
+    0% {
+        transform: translateX(0%);
+    }
+
+    25% {
+        transform: translateX(100%);
+    }
+
+    50% {
+        transform: translateX(200%);
+    }
+
+    51% {
+        transform: translateX(-200%);
+    }
+
+    75% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(0%);
+    }
+}
+
+@keyframes overlay {
+    0% {
+        fill: transparent;
+    }
+
+    100% {
+        fill: red;
+    }
+}
+
+#button-arrow {
+    animation: none;
+    pointer-events: none;
+}
+
+#button-outline:hover+#button-arrow {
+    animation: move-arrow 0.25s linear;
+}
+
+#button-outline:hover {
+    animation: overlay 0.25s linear forwards;
+    cursor: pointer;
+}
+
+/* ========================= */

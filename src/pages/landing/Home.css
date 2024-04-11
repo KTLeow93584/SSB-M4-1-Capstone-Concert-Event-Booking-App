@@ -35,26 +35,124 @@
 
 /* ========================= */
 
-.contact-banner-container {
+.contact-parallax-bg-container {
     position: relative;
-    transform-style: preserve-3d;
-    width: 100%;
-    height: 800px;
+    width: 100vw;
+    height: 450px;
     overflow: hidden;
 }
 
-.parallax {
-    /* The image used */
-    background-image: url("../../assets/images/contact-us-banners/banner-3.webp");
+.contact-parallax-bg-image {
+    width: 1600px;
+    min-height: 900px;
+    margin-top: -150px;
+}
 
-    /* Set a specific height */
-    min-height: 500px;
+.contact-button {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    border: none !important;
+    background-color: black !important;
+    padding: 4px 0 6px 0 !important;
+}
 
-    /* Create the parallax scrolling effect */
-    /*background-attachment: fixed;*/
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+.contact-button:hover {
+    background-color: #cccccc !important;
+}
+
+.contact-button:hover .contact-button-text {
+    color: black !important;
+}
+
+.contact-button-text {
+    color: white !important;
+    font-size: 0.8em !important;
+    font-weight: bold;
+
+    padding-left: 4em !important;
+    padding-right: 4em !important;
+
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+    transition: color 0.3s;
+}
+
+/* ========================= */
+.post-card {
+    background-color: #dddddd !important;
+    height: 600px !important;
+    overflow: hidden;
+    transition: transform 0.3s, background-color 0.3s;
+    margin-bottom: 0;
+}
+
+.post-card:hover {
+    transform: scale(1.12, 1.12);
+    background-color: red !important;
+}
+
+.post-card:hover .svg-icon-group {
+    opacity: 1;
+}
+
+.post-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    height: 100% !important;
+    padding: 30px 0px 30px 0px;
+}
+
+.post-category-text {
+    font-size: 0.8em;
+    font-weight: normal;
+    letter-spacing: 1.5px;
+    margin-top: 20%;
+}
+
+.post-title-text {
+    font-size: 1.7em;
+    font-weight: bold;
+    margin-top: 5%;
+}
+
+.post-button {
+    margin-top: auto;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: 15px;
+}
+
+/* ========================= */
+@media only screen and (max-width: 992px) {
+    .post-card {
+        height: 300px !important;
+        margin-bottom: 20px;
+    }
+
+    .post-body {
+        padding: 0;
+        justify-content: space-evenly;
+    }
+
+    .post-category-text {
+        font-size: 0.8em;
+        font-weight: normal;
+        letter-spacing: 1.5px;
+        margin-top: 0;
+    }
+
+    .post-title-text {
+        font-size: 1.5em;
+        font-weight: bold;
+        margin-top: 0;
+    }
+
+    .post-button {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
 }
 
 /* ========================= */
@@ -97,14 +195,34 @@
     letter-spacing: 2px;
 }
 
-.content-absolute-button-image {
+@keyframes move-button {
+    0% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(30%);
+    }
+}
+
+@keyframes move-button-reverse {
+    0% {
+        transform: translateX(30%);
+    }
+
+    100% {
+        transform: translateX(0%);
+    }
+}
+
+.content-explore-button {
+    z-index: 2;
     margin-left: -1.4vw;
-    min-width: 32px;
-    min-height: 32px;
-    max-width: 64px;
-    max-height: 64px;
-    width: 5vw;
-    height: auto;
+    animation: move-button-reverse 0.12s linear forwards;
+}
+
+.content-explore-button:hover {
+    animation: move-button 0.12s linear forwards;
 }
 
 .content-carousel-button {

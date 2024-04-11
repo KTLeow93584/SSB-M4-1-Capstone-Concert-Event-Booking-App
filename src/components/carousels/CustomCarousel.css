@@ -49,6 +49,37 @@
     position: absolute;
     top: 40%;
     left: 2%;
+    animation: none;
+}
+
+@keyframes move-button {
+    0% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(15%);
+    }
+}
+
+@keyframes move-button-reverse {
+    0% {
+        transform: translateX(15%);
+    }
+
+    100% {
+        transform: translateX(0%);
+    }
+}
+
+.custom-carousel-item-element-caption-button {
+    z-index: 2;
+    margin-left: -1.4vw;
+    animation: move-button-reverse 0.2s linear forwards;
+}
+
+.custom-carousel-item-element-caption-button:hover {
+    animation: move-button 0.2s linear forwards;
 }
 
 .custom-carousel-item-element-caption-text {
@@ -59,16 +90,6 @@
     letter-spacing: 2px;
     user-select: none;
     text-shadow: 2px 2px 5px black;
-}
-
-.custom-carousel-item-element-caption-image {
-    margin-left: -1.4vw;
-    min-width: 32px;
-    min-height: 32px;
-    max-width: 64px;
-    max-height: 64px;
-    width: 5vw;
-    height: auto;
 }
 
 .custom-carousel-previous-button,

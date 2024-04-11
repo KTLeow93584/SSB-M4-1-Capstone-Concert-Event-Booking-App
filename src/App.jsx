@@ -3,6 +3,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react'
 import { Route, Routes, Outlet, useNavigate } from 'react-router-dom';
 import useLocalStorage from 'use-local-storage';
+import { ParallaxProvider } from 'react-scroll-parallax';
 
 import Container from 'react-bootstrap/Container';
 
@@ -116,104 +117,106 @@ function App() {
   return (
     <Container fluid className="main-container m-0 p-0">
       <AuthProvider>
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            <Routes>
-              {/* Append "Layout" component on top of all the following pages */}
-              <Route path="/" element={<Layout />}>
-                {/* ------------------------- */}
-                {/* Dashboard (Main Page Redirect after Logged In) */}
-                <Route element={
-                  <UserAuth>
-                    <Dashboard />
-                  </UserAuth>
-                } path="/dashboard" />
-                {/* ------------------------- */}
-                {/* User Profile Page(s) */}
-                <Route element={
-                  <UserAuth>
-                    <ProfilePage />
-                  </UserAuth>
-                } path="/profile" />
-
-                {
-                  /*
+        <ParallaxProvider>
+          <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+              <Routes>
+                {/* Append "Layout" component on top of all the following pages */}
+                <Route path="/" element={<Layout />}>
+                  {/* ------------------------- */}
+                  {/* Dashboard (Main Page Redirect after Logged In) */}
                   <Route element={
                     <UserAuth>
-                      <EditProfile />
+                      <Dashboard />
                     </UserAuth>
-                  } path="/profile/edit" />
-                  */
-                }
-                {/* ------------------------- */}
-                {/* Event Page(s) */}
-                <Route element={
-                  <UserAuth>
-                    <AddNewEvent />
-                  </UserAuth>
-                } path="/event/add" />
+                  } path="/dashboard" />
+                  {/* ------------------------- */}
+                  {/* User Profile Page(s) */}
+                  <Route element={
+                    <UserAuth>
+                      <ProfilePage />
+                    </UserAuth>
+                  } path="/profile" />
 
-                <Route element={
-                  <UserAuth>
-                    <ParamsAuth>
-                      <ModifyEvent />
-                    </ParamsAuth>
-                  </UserAuth>
-                } path="/event/modify" />
-                {/* ------------------------- */}
-                {/* Authentication Pages */}
-                <Route element={
-                  <GuestAuth>
-                    <LoginPage />
-                  </GuestAuth>
-                } path="/login" />
+                  {
+                    /*
+                    <Route element={
+                      <UserAuth>
+                        <EditProfile />
+                      </UserAuth>
+                    } path="/profile/edit" />
+                    */
+                  }
+                  {/* ------------------------- */}
+                  {/* Event Page(s) */}
+                  <Route element={
+                    <UserAuth>
+                      <AddNewEvent />
+                    </UserAuth>
+                  } path="/event/add" />
 
-                <Route element={
-                  <GuestAuth>
-                    <RegistrationPage />
-                  </GuestAuth>
-                } path="/register" />
+                  <Route element={
+                    <UserAuth>
+                      <ParamsAuth>
+                        <ModifyEvent />
+                      </ParamsAuth>
+                    </UserAuth>
+                  } path="/event/modify" />
+                  {/* ------------------------- */}
+                  {/* Authentication Pages */}
+                  <Route element={
+                    <GuestAuth>
+                      <LoginPage />
+                    </GuestAuth>
+                  } path="/login" />
 
-                <Route element={
-                  <GuestAuth>
-                    <VerifyEmailPage />
-                  </GuestAuth>
-                } path="/verify/:token" />
+                  <Route element={
+                    <GuestAuth>
+                      <RegistrationPage />
+                    </GuestAuth>
+                  } path="/register" />
 
-                <Route element={
-                  <GuestAuth>
-                    <ForgetPasswordPage />
-                  </GuestAuth>
-                } path="/password/forget" />
+                  <Route element={
+                    <GuestAuth>
+                      <VerifyEmailPage />
+                    </GuestAuth>
+                  } path="/verify/:token" />
 
-                <Route element={
-                  <GuestAuth>
-                    <ResetPasswordPage />
-                  </GuestAuth>
-                } path="/password/reset/:token" />
-                {/* ------------------------- */}
-                {/* Error Page (Codebase will explicitly send user to this page
+                  <Route element={
+                    <GuestAuth>
+                      <ForgetPasswordPage />
+                    </GuestAuth>
+                  } path="/password/forget" />
+
+                  <Route element={
+                    <GuestAuth>
+                      <ResetPasswordPage />
+                    </GuestAuth>
+                  } path="/password/reset/:token" />
+                  {/* ------------------------- */}
+                  {/* Error Page (Codebase will explicitly send user to this page
                   * when server responds with a "500" code from API requests) 
                   */}
-                <Route element={
-                  <NetErrorPage />
-                } path="/error" />
-                {/* ------------------------- */}
-                {/* Default Landing Pages -> Home */}
-                <Route index element={<Home />} />
+                  <Route element={
+                    <NetErrorPage />
+                  } path="/error" />
+                  {/* ------------------------- */}
+                  {/* Default Landing Pages -> Home */}
+                  <Route index element={<Home />} />
 
-                <Route element={
-                  <Home />
-                } path="/home" />
+                  <Route element={
+                    <Home />
+                  } path="/home" />
 
-                <Route element={
-                  <Home />
-                } path="/*" />
-                {/* ------------------------- */}
-              </Route>
-            </Routes>
-          </PersistGate>
-        </Provider>
+                  <Route element={
+                    <Home />
+                  } path="/*" />
+                  {/* ------------------------- */}
+                </Route>
+              </Routes>
+            </PersistGate>
+          </Provider>
+        </ParallaxProvider>
       </AuthProvider>
     </Container>
   );

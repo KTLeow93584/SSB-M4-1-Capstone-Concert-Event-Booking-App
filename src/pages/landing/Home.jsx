@@ -1,27 +1,32 @@
 // =========================================
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useParallax, useParallaxController } from 'react-scroll-parallax';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
+import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image';
+import Card from 'react-bootstrap/Card';
 
 import HomePageReelModal from '../../components/modals/HomePageReelModal.jsx';
 import { NavigationPanelHome } from '../../components/navs';
 import CustomCarousel from '../../components/carousels';
 
+import { concertItems } from '../../data/concerts.js';
+import { posts } from '../../data/posts.js';
+
+import SVGButtonArrow from '../../components/svg-components/SVGButtonArrow.jsx';
+import SVGButtonPlay from '../../components/svg-components/SVGButtonPlay.jsx';
+import SVGIconArrow from '../../components/svg-components/SVGIconArrow.jsx';
+
 import homePageVideo from '../../assets/videos/landing/homepage-reel.mp4';
-import watchReelImage from '../../assets/images/landing/watch-reel.webp';
-import viewMoreImage from '../../assets/images/landing/view-more.webp';
 import awardsImage from '../../assets/images/landing/home-awards.webp';
 import newsImage from '../../assets/images/landing/new-concert.webp';
 import horizontalBarImage from '../../assets/images/landing/horizontal-bar.webp';
-
-import { concertItems } from '../../data/concerts.js';
-
-import underConstructionImage from '../../assets/images/misc/under-construction.webp';
+import contactBannerrImage from '../../assets/images/landing/contact-banner.webp';
 
 import './Home.css';
 // =========================================
@@ -31,6 +36,29 @@ export default function Home() {
 
     const onShowHomePageReel = () => setIsHomePageReelVisible(true);
     const onHideHomePageReel = () => setIsHomePageReelVisible(false);
+    // ================
+    const [isSmallWidth, setIsSmallWidth] = useState(false);
+    // ================
+    const determineCarouselHeaderStyle = () => {
+        const screenWidth = window.innerWidth;
+
+        // Debug
+        //console.log("Width: " + screenWidth);
+
+        // Bootstrap's "sm" = 540px, "md" = 768px and so forth.
+        setIsSmallWidth(screenWidth < 768);
+    };
+
+    useEffect(() => {
+        // Call the function initially and on window resize
+        determineCarouselHeaderStyle();
+        window.addEventListener("resize", determineCarouselHeaderStyle);
+
+        // Cleanup on unmount
+        return () => {
+            window.removeEventListener("resize", determineCarouselHeaderStyle);
+        };
+    }, []);
     // ================
     return (
         <div className="position-relative">
@@ -49,12 +77,12 @@ export default function Home() {
                 {/* --------------------------------- */}
                 {/* Latest Gig */}
                 <Row className="mt-5" style={{ position: "relative" }}>
-                    <NewsSection />
+                    <GigSection />
                 </Row>
                 {/* --------------------------------- */}
                 {/* Past Events */}
                 <Row className="mt-5" style={{ position: "relative" }}>
-                    <PastEventsCarouselSection />
+                    <PastEventsCarouselSection isSmallWidth={isSmallWidth} />
                 </Row>
                 {/* --------------------------------- */}
                 {/* Contact Banner */}
@@ -62,7 +90,10 @@ export default function Home() {
                     <ContactSection />
                 </Row>
                 {/* --------------------------------- */}
-                {/* News/Postings */}
+                {/* Postings */}
+                <Row className="my-5" style={{ position: "relative" }}>
+                    <PostsSection isSmallWidth={isSmallWidth} />
+                </Row>
                 {/* --------------------------------- */}
             </Container>
             <HomePageReelModal isVisible={isHomePageReelVisible} onHide={onHideHomePageReel} />
@@ -79,9 +110,9 @@ function PromoSection({ onShowHomePageReel }) {
                     <p onClick={onShowHomePageReel} className="content-absolute-button-text m-0 p-0" role="button">
                         WATCH REEL
                     </p>
-                    <Image src={watchReelImage} onClick={onShowHomePageReel}
-                        className="content-absolute-button-image"
-                        role="button" />
+                    <SVGButtonPlay width="95" height="95"
+                        onClick={onShowHomePageReel}
+                        className="content-explore-button" />
                 </div>
                 {/* Video Source */}
                 <video src={homePageVideo} autoPlay muted
@@ -130,7 +161,7 @@ function CompanyBrandSection() {
     );
 }
 // =========================================
-function NewsSection() {
+function GigSection() {
     const navigate = useNavigate();
 
     return (
@@ -152,9 +183,9 @@ function NewsSection() {
                     <p onClick={() => navigate("#")} className="content-absolute-button-text m-0 p-0" role="button">
                         VIEW MORE
                     </p>
-                    <Image src={viewMoreImage} onClick={() => navigate("#")}
-                        className="content-absolute-button-image"
-                        role="button" />
+                    <SVGButtonArrow width="65" height="65"
+                        onClick={() => navigate("#")}
+                        className="content-explore-button" />
                 </div>
                 {/* Image Source */}
                 <Image src={newsImage}
@@ -168,30 +199,9 @@ function NewsSection() {
     );
 }
 // =========================================
-function PastEventsCarouselSection() {
+function PastEventsCarouselSection({ isSmallWidth }) {
     // ================
-    const [isSmallWidth, setIsSmallWidth] = useState(false);
-    // ================
-    const determineCarouselHeaderStyle = () => {
-        const screenWidth = window.innerWidth;
-
-        // Debug
-        //console.log("Width: " + screenWidth);
-
-        // Bootstrap's "sm" = 540px, "md" = 768px and so forth.
-        setIsSmallWidth(screenWidth < 768);
-    };
-    // ================
-    useEffect(() => {
-        // Call the function initially and on window resize
-        determineCarouselHeaderStyle();
-        window.addEventListener("resize", determineCarouselHeaderStyle);
-
-        // Cleanup on unmount
-        return () => {
-            window.removeEventListener("resize", determineCarouselHeaderStyle);
-        };
-    }, []);
+    const title = "Past Concerts";
     // ================
     return (
         <Col className="col-12">
@@ -203,7 +213,7 @@ function PastEventsCarouselSection() {
                                 <div className="d-flex align-items-center">
                                     <Image src={horizontalBarImage} className="me-3" />
                                     <p className="content-rotateable-text my-0 py-0">
-                                        Past Concerts
+                                        {title}
                                     </p>
                                 </div>
                             </>
@@ -215,7 +225,7 @@ function PastEventsCarouselSection() {
                                         transformOrigin: "100%", marginTop: "155px"
                                     }}>
                                     <p className="content-rotateable-text my-0 me-3 py-0">
-                                        Past Concerts
+                                        {title}
                                     </p>
                                     <Image src={horizontalBarImage} />
                                 </div>
@@ -223,7 +233,7 @@ function PastEventsCarouselSection() {
                         )
                     }
                 </Col>
-                <Col className="col-md-11 col-11 ms-md-0 ms-auto">
+                <Col className="col-11 ms-md-0 ms-auto">
                     <CustomCarousel items={concertItems} maxCarouselItemPerRow={1} />
                 </Col>
             </Row>
@@ -233,16 +243,88 @@ function PastEventsCarouselSection() {
 // =========================================
 function ContactSection() {
     // ================
+    const { ref } = useParallax({ speed: 25 });
+    const parallaxController = useParallaxController();
+    // ================
     return (
-        <Col className="col-12 d-flex flex-column align-items-center justify-content-center">
-            <h1 className="m-0 p-0 text-center">Feature Currently Unavailable</h1>
-            <Image src={underConstructionImage}
-                style={{
-                    minWidth: "128px", minHeight: "128px",
-                    maxWidth: "256px", maxHeight: "256px",
-                    width: "100%", height: "auto"
-                }}
-            />
+        <Col className="col-12">
+            <div className="contact-parallax-bg-container">
+                <Image src={contactBannerrImage}
+                    className="contact-parallax-bg-image"
+                    ref={ref} onLoad={() => parallaxController.update()}
+                />
+                <Button className="contact-button">
+                    <span className="contact-button-text">
+                        Contact Us!
+                    </span>
+                </Button>
+            </div>
+        </Col>
+    );
+}
+// =========================================
+function PostsSection({ isSmallWidth }) {
+    // ================
+    const title = "Latest News";
+    // ================
+    return (
+        <Col className="col-12">
+            <Row>
+                <Col className="col-md-1 col-11 ms-md-0 ms-auto">
+                    {
+                        isSmallWidth ? (
+                            <>
+                                <div className="d-flex align-items-center">
+                                    <Image src={horizontalBarImage} className="me-3" />
+                                    <p className="content-rotateable-text my-0 py-0">
+                                        {title}
+                                    </p>
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <div className="d-flex align-items-center"
+                                    style={{
+                                        width: "100%", transform: "rotate(270deg)",
+                                        transformOrigin: "100%", marginTop: "155px"
+                                    }}>
+                                    <p className="content-rotateable-text my-0 me-3 py-0">
+                                        {title}
+                                    </p>
+                                    <Image src={horizontalBarImage} />
+                                </div>
+                            </>
+                        )
+                    }
+                </Col>
+                <Col className="col-md-9 col-11 ms-auto me-auto">
+                    <Row>
+                        {
+                            posts.map((post, index) => (
+                                <Post key={`post-${index}`} category={post.category} title={post.title} />
+                            ))
+                        }
+                    </Row>
+                </Col>
+            </Row>
+        </Col>
+    );
+}
+
+function Post({ category, title }) {
+    const navigate = useNavigate();
+
+    return (
+        <Col className="col-lg-4 col-12">
+            <Card className="post-card" role="button" onClick={() => navigate("#")}>
+                <Card.Body className="post-body">
+                    <p className="post-category-text">THE LATEST // {category.toUpperCase()}</p>
+                    <p className="post-title-text">{title}</p>
+                    <div className="post-button">
+                        <SVGIconArrow width="60" height="45" />
+                    </div>
+                </Card.Body>
+            </Card>
         </Col>
     );
 }

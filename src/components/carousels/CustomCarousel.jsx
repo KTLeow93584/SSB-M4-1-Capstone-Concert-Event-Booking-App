@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 
-import viewMoreImage from '../../assets/images/landing/view-more.webp';
+import SVGButtonArrow from '../svg-components/SVGButtonArrow.jsx';
 
 import './CustomCarousel.css';
 // =========================================
@@ -280,10 +280,9 @@ function CarouselItemElement({ item, elementWidth, itemIndex }) {
             />
             <div className="d-flex align-items-center custom-carousel-item-element-caption">
                 <h5 className="custom-carousel-item-element-caption-text">{item.caption}</h5>
-                <Image src={viewMoreImage} onClick={() => navigate("#")}
-                    className="custom-carousel-item-element-caption-image"
-                    draggable={false}
-                    role="button" />
+                <SVGButtonArrow width="95" height="95"
+                    onClick={() => navigate("#")}
+                    className="custom-carousel-item-element-caption-button" />
             </div>
         </div>
     );
