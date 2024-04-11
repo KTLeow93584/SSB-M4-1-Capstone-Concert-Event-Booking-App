@@ -14,7 +14,7 @@ import Image from 'react-bootstrap/Image';
 import { callServerAPI } from '../../apis/apiAxiosFetch.jsx';
 import { onLoadingStart, onLoadingEnd } from '../../data/loaders.js';
 
-import crossedImage from "../../assets/images/crossed.gif";
+import crossedImage from "../../assets/images/auth/crossed.gif";
 
 import "./ResetPasswordPage.css";
 // =========================================

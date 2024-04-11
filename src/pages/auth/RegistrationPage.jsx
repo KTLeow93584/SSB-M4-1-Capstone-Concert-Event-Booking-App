@@ -17,7 +17,7 @@ import { onFacebookAuthPrompt, onGoogleAuthPrompt } from '../../apis/authAPIHand
 import { onLoadingStart, onLoadingEnd } from '../../data/loaders.js';
 import { register } from '../../feature/activeUser/activeUserSlice.jsx';
 
-import googleIcon from '../../assets/images/google.webp';
+import googleIcon from '../../assets/images/auth/google.webp';
 import "./RegistrationPage.css";
 // =========================================
 export default function RegistrationPage() {

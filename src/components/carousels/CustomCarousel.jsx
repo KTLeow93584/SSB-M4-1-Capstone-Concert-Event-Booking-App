@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 
-import viewMoreImage from '../../assets/images/view-more.webp';
+import viewMoreImage from '../../assets/images/landing/view-more.webp';
 
 import './CustomCarousel.css';
 // =========================================

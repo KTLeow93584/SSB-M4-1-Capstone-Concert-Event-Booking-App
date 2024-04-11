@@ -45,7 +45,7 @@
 
 .parallax {
     /* The image used */
-    background-image: url("../assets/images/contact-us-banners/banner-3.webp");
+    background-image: url("../../assets/images/contact-us-banners/banner-3.webp");
 
     /* Set a specific height */
     min-height: 500px;

@@ -88,7 +88,7 @@
 
     top: 50%;
     left: 2%;
-    background-image: url("../assets/images/left.png");
+    background-image: url("../../assets/images/carousels/left.png");
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -99,7 +99,7 @@
     top: 50%;
     right: 2%;
 
-    background-image: url("../assets/images/right.png");
+    background-image: url("../../assets/images/carousels/right.png");
     background-repeat: no-repeat;
     background-size: cover;
 }

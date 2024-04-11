@@ -12,16 +12,16 @@ import HomePageReelModal from '../../components/modals/HomePageReelModal.jsx';
 import { NavigationPanelHome } from '../../components/navs';
 import CustomCarousel from '../../components/carousels';
 
-import homePageVideo from '../../assets/videos/homepage-reel.mp4';
-import watchReelImage from '../../assets/images/watch-reel.webp';
-import viewMoreImage from '../../assets/images/view-more.webp';
-import awardsImage from '../../assets/images/home-awards.webp';
-import newsImage from '../../assets/images/new-concert.webp';
-import horizontalBarImage from '../../assets/images/horizontal-bar.webp';
+import homePageVideo from '../../assets/videos/landing/homepage-reel.mp4';
+import watchReelImage from '../../assets/images/landing/watch-reel.webp';
+import viewMoreImage from '../../assets/images/landing/view-more.webp';
+import awardsImage from '../../assets/images/landing/home-awards.webp';
+import newsImage from '../../assets/images/landing/new-concert.webp';
+import horizontalBarImage from '../../assets/images/landing/horizontal-bar.webp';
 
 import { concertItems } from '../../data/concerts.js';
 
-import underConstructionImage from '../../assets/images/under-construction.webp';
+import underConstructionImage from '../../assets/images/misc/under-construction.webp';
 
 import './Home.css';
 // =========================================

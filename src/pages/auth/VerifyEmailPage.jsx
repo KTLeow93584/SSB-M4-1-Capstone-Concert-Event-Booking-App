@@ -11,8 +11,8 @@ import Image from 'react-bootstrap/Image';
 import { callServerAPI } from '../../apis/apiAxiosFetch.jsx';
 import { onLoadingStart, onLoadingEnd } from '../../data/loaders.js';
 
-import checkedImage from "../../assets/images/checked.gif";
-import crossedImage from "../../assets/images/crossed.gif";
+import checkedImage from "../../assets/images/auth/checked.gif";
+import crossedImage from "../../assets/images/auth/crossed.gif";
 
 import "./VerifyEmailPage.css";
 // =========================================

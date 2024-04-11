@@ -5,7 +5,7 @@ import Col from 'react-bootstrap/Col';
 
 import Image from 'react-bootstrap/Image';
 
-import deadRobot from '../../assets/images/dead-robot.webp';
+import deadRobot from '../../assets/images/misc/dead-robot.webp';
 // =========================================
 export default function NetErrorPage() {
     return (

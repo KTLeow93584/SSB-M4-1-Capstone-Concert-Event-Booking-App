@@ -21,7 +21,7 @@ import { onLoadingStart, onLoadingEnd } from '../../data/loaders.js';
 import { errorNoAuthEventName } from '../../data/error-loggers.js';
 import { login } from '../../feature/activeUser/activeUserSlice.jsx';
 
-import googleIcon from '../../assets/images/google.webp';
+import googleIcon from '../../assets/images/auth/google.webp';
 import './LoginPage.css';
 // =========================================
 export default function LoginPage() {

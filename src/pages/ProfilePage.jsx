@@ -14,7 +14,7 @@ import Button from 'react-bootstrap/Button';
 import { onLoadingStart, onLoadingEnd } from '../data/loaders.js';
 import { updateActiveUser, updateUserInfo } from '../feature/activeUser/activeUserSlice.jsx';
 
-import underConstructionImage from '../assets/images/under-construction.webp';
+import underConstructionImage from '../assets/images/misc/under-construction.webp';
 // ==============================================
 /* [Delete Once Understood/Feature Ready] Notes For Profile Feature.
 *
