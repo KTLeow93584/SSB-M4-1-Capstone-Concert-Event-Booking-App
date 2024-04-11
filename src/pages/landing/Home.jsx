@@ -8,20 +8,20 @@ import Col from 'react-bootstrap/Col';
 
 import Image from 'react-bootstrap/Image';
 
-import HomePageReelModal from '../components/HomePageReelModal.jsx';
-import NavigationPanelHome from '../components/NavigationPanelHome.jsx';
-import CustomCarousel from '../components/CustomCarousel';
+import HomePageReelModal from '../../components/modals/HomePageReelModal.jsx';
+import { NavigationPanelHome } from '../../components/navs';
+import CustomCarousel from '../../components/carousels';
 
-import homePageVideo from '../assets/videos/homepage-reel.mp4';
-import watchReelImage from '../assets/images/watch-reel.webp';
-import viewMoreImage from '../assets/images/view-more.webp';
-import awardsImage from '../assets/images/home-awards.webp';
-import newsImage from '../assets/images/new-concert.webp';
-import horizontalBarImage from '../assets/images/horizontal-bar.webp';
+import homePageVideo from '../../assets/videos/homepage-reel.mp4';
+import watchReelImage from '../../assets/images/watch-reel.webp';
+import viewMoreImage from '../../assets/images/view-more.webp';
+import awardsImage from '../../assets/images/home-awards.webp';
+import newsImage from '../../assets/images/new-concert.webp';
+import horizontalBarImage from '../../assets/images/horizontal-bar.webp';
 
-import { concertItems } from '../data/concerts.js';
+import { concertItems } from '../../data/concerts.js';
 
-import underConstructionImage from '../assets/images/under-construction.webp';
+import underConstructionImage from '../../assets/images/under-construction.webp';
 
 import './Home.css';
 // =========================================

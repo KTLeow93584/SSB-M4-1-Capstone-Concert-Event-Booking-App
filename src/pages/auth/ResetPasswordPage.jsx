@@ -11,10 +11,10 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Image from 'react-bootstrap/Image';
 
-import { callServerAPI } from '../apis/apiAxiosFetch.jsx';
-import { onLoadingStart, onLoadingEnd } from '../data/loaders.js';
+import { callServerAPI } from '../../apis/apiAxiosFetch.jsx';
+import { onLoadingStart, onLoadingEnd } from '../../data/loaders.js';
 
-import crossedImage from "../assets/images/crossed.gif";
+import crossedImage from "../../assets/images/crossed.gif";
 
 import "./ResetPasswordPage.css";
 // =========================================

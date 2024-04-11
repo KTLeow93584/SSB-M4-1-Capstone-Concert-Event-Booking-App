@@ -10,11 +10,11 @@ import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar';
 import Image from 'react-bootstrap/Image';
 
-import { logout, updateActiveUser } from '../feature/activeUser/activeUserSlice.jsx';
-import { updateSessionToken } from '../apis/apiAxiosFetch.jsx';
+import { logout, updateActiveUser } from '../../feature/activeUser/activeUserSlice.jsx';
+import { updateSessionToken } from '../../apis/apiAxiosFetch.jsx';
 
-import logoImage from '../assets/images/logo.webp';
-import defaultProfileImage from '../assets/images/user-profile-default.webp';
+import logoImage from '../../assets/images/logo.webp';
+import defaultProfileImage from '../../assets/images/user-profile-default.webp';
 // =========================================
 export default function NavigationPanelUser() {
     // ================

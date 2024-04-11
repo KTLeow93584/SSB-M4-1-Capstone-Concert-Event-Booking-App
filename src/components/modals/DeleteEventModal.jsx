@@ -5,9 +5,9 @@ import { useDispatch } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-import { deleteEvent } from '../feature/events/eventsSlice.jsx';
+import { deleteEvent } from '../../feature/events/eventsSlice.jsx';
 
-import { onLoadingStart, onLoadingEnd } from '../data/loaders.js';
+import { onLoadingStart, onLoadingEnd } from '../../data/loaders.js';
 // =========================================
 export default function DeleteEventModal({ show, event, onCloseModalCallback, onAfterDeleteCallback = null }) {
     // =====================

@@ -10,8 +10,8 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 
-import { callServerAPI } from '../apis/apiAxiosFetch.jsx';
-import { onLoadingStart, onLoadingEnd } from '../data/loaders.js';
+import { callServerAPI } from '../../apis/apiAxiosFetch.jsx';
+import { onLoadingStart, onLoadingEnd } from '../../data/loaders.js';
 
 import "./ForgetPasswordPage.css";
 // =========================================

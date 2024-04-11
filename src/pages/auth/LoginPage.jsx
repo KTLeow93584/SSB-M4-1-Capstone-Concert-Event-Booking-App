@@ -12,16 +12,16 @@ import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import Image from 'react-bootstrap/Image';
 
-import { updateSessionToken } from "../apis/apiAxiosFetch.jsx";
+import { updateSessionToken } from "../../apis/apiAxiosFetch.jsx";
 
-import SessionTimeoutModal from '../components/SessionTimeoutModal.jsx';
+import SessionTimeoutModal from '../../components/modals/SessionTimeoutModal.jsx';
 
-import { onFacebookAuthPrompt, onGoogleAuthPrompt } from '../apis/authAPIHandler.jsx';
-import { onLoadingStart, onLoadingEnd } from '../data/loaders.js';
-import { errorNoAuthEventName } from '../data/error-loggers.js';
-import { login } from '../feature/activeUser/activeUserSlice.jsx';
+import { onFacebookAuthPrompt, onGoogleAuthPrompt } from '../../apis/authAPIHandler.jsx';
+import { onLoadingStart, onLoadingEnd } from '../../data/loaders.js';
+import { errorNoAuthEventName } from '../../data/error-loggers.js';
+import { login } from '../../feature/activeUser/activeUserSlice.jsx';
 
-import googleIcon from '../assets/images/google.webp';
+import googleIcon from '../../assets/images/google.webp';
 import './LoginPage.css';
 // =========================================
 export default function LoginPage() {

@@ -13,20 +13,19 @@ import GuestAuth from './auths/GuestAuth.jsx';
 import ParamsAuth from './auths/ParamsAuth.jsx';
 import UserAuth from './auths/UserAuth.jsx';
 
-import Home from './pages/Home.jsx';
-import LoginPage from './pages/LoginPage.jsx';
+import {
+  RegistrationPage, LoginPage,
+  VerifyEmailPage,
+  ForgetPasswordPage, ResetPasswordPage
+} from './pages/auth';
+
+import { AddNewEvent, ModifyEvent } from './pages/events';
+import { Home } from './pages/landing';
+import { NetErrorPage } from './pages/misc';
+
 import ProfilePage from './pages/ProfilePage.jsx';
-import RegistrationPage from './pages/RegistrationPage.jsx';
-import VerifyEmailPage from './pages/VerifyEmailPage.jsx';
-import ForgetPasswordPage from './pages/ForgetPasswordPage.jsx';
-import ResetPasswordPage from './pages/ResetPasswordPage.jsx';
-
+//import EditProfile from './pages/EditProfile.jsx';
 import Dashboard from './pages/Dashboard.jsx';
-import EditProfile from './pages/ProfilePage.jsx';
-import NetErrorPage from './pages/NetErrorPage.jsx';
-
-import AddNewEvent from './pages/AddNewEvent.jsx';
-import ModifyEvent from './pages/ModifyEvent.jsx';
 // ==============================================
 import './App.css';
 
@@ -137,11 +136,15 @@ function App() {
                   </UserAuth>
                 } path="/profile" />
 
-                <Route element={
-                  <UserAuth>
-                    <EditProfile />
-                  </UserAuth>
-                } path="/profile/edit" />
+                {
+                  /*
+                  <Route element={
+                    <UserAuth>
+                      <EditProfile />
+                    </UserAuth>
+                  } path="/profile/edit" />
+                  */
+                }
                 {/* ------------------------- */}
                 {/* Event Page(s) */}
                 <Route element={

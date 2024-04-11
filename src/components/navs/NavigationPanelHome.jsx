@@ -14,10 +14,10 @@ import Image from 'react-bootstrap/Image';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import ListGroup from 'react-bootstrap/ListGroup';
 
-import { logout, updateActiveUser } from '../feature/activeUser/activeUserSlice.jsx';
-import { updateSessionToken } from '../apis/apiAxiosFetch.jsx';
+import { logout, updateActiveUser } from '../../feature/activeUser/activeUserSlice.jsx';
+import { updateSessionToken } from '../../apis/apiAxiosFetch.jsx';
 
-import logoImage from '../assets/images/logo.webp';
+import logoImage from '../../assets/images/logo.webp';
 
 import './NavigationPanelHome.css';
 // =========================================

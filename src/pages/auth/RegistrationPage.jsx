@@ -13,11 +13,11 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
 import Image from 'react-bootstrap/Image';
 
-import { onFacebookAuthPrompt, onGoogleAuthPrompt } from '../apis/authAPIHandler.jsx';
-import { onLoadingStart, onLoadingEnd } from '../data/loaders.js';
-import { register } from '../feature/activeUser/activeUserSlice.jsx';
+import { onFacebookAuthPrompt, onGoogleAuthPrompt } from '../../apis/authAPIHandler.jsx';
+import { onLoadingStart, onLoadingEnd } from '../../data/loaders.js';
+import { register } from '../../feature/activeUser/activeUserSlice.jsx';
 
-import googleIcon from '../assets/images/google.webp';
+import googleIcon from '../../assets/images/google.webp';
 import "./RegistrationPage.css";
 // =========================================
 export default function RegistrationPage() {

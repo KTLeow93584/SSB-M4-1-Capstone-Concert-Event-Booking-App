@@ -11,8 +11,8 @@ import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-import VenuePreviewModal from '../components/VenuePreviewModal.jsx';
-import DeleteEventModal from '../components/DeleteEventModal.jsx';
+import VenuePreviewModal from '../components/modals/VenuePreviewModal.jsx';
+import DeleteEventModal from '../components/modals/DeleteEventModal.jsx';
 
 import { updateActiveUser } from '../feature/activeUser/activeUserSlice.jsx';
 import { fetchEventsUser } from '../feature/events/eventsSlice.jsx';

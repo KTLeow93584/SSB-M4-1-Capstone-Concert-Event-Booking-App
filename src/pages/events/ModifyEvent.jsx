@@ -1,7 +1,7 @@
 // =========================================
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -12,29 +12,33 @@ import Form from 'react-bootstrap/Form';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Image from 'react-bootstrap/Image';
 
-import VenuePreviewModal from '../components/VenuePreviewModal.jsx';
+import VenuePreviewModal from '../../components/modals/VenuePreviewModal.jsx';
 
-import { callServerAPI } from '../apis/apiAxiosFetch.jsx';
-import { createANewEvent } from '../feature/events/eventsSlice.jsx';
+import { callServerAPI } from '../../apis/apiAxiosFetch.jsx';
+import { updateEvent } from '../../feature/events/eventsSlice.jsx';
 
-import { onLoadingStart, onLoadingEnd } from '../data/loaders.js';
+import { onLoadingStart, onLoadingEnd } from '../../data/loaders.js';
 // =========================================
-export default function AddNewEvent() {
+export default function ModifyEvent() {
     // ================
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const location = useLocation();
+    const { event } = location.state;
     // ============
-    const now = new Date();
+    let now = useRef();
+    now.current = new Date();
 
-    const [name, setName] = useState("");
+    const [name, setName] = useState(event ? event.event_name : "");
 
-    const [startTime, setStartTime] = useState(now);
-    const [endTime, setEndTime] = useState(now);
+    const [startTime, setStartTime] = useState(null);
+    const [endTime, setEndTime] = useState(null);
 
     const [showTimeWarning, setShowTimeWarning] = useState(false);
     const [timeWarning, setTimeWarning] = useState("");
 
-    const [promotionalImage, setPromotionalImage] = useState(null);
+    const [promotionalImage, setPromotionalImage] = useState(event ? event.event_promotional_image : null);
     const [isCorrectImageFormat, setIsCorrectImageFormat] = useState(true);
 
     const updatePromotionalImage = (event) => {
@@ -88,46 +92,84 @@ export default function AddNewEvent() {
     };
     const onCloseVenuePreviewModal = () => setShowVenueModal(false);
 
-    const [remarks, setRemarks] = useState("");
+    const [remarks, setRemarks] = useState(event ? event.event_remarks : "");
     // ============
     useEffect(() => {
+        if (!event)
+            return;
         onLoadingStart("Global");
 
-        // Debug
-        //console.log("Fetch Server's Venue List Event");
-        callServerAPI("venues", "GET", null,
+        callServerAPI(`event/${event.event_id}`, "GET", null,
             // On Successful Callback
             (result) => {
-                onLoadingEnd("Global");
-
                 // Debug
-                //console.log("[Server Venue List Successful] Result.", result);
+                //console.log("[Load Target Event Info Successful] Result.", result);
 
-                setVenues(result.venues);
+                const loadedEvent = result.event;
+                setName(loadedEvent ? loadedEvent.event_name : "");
+
+                now.current = new Date();
+                const localOffset = now.current.getTimezoneOffset() * 60000;
+                const startTimeUTC = new Date(loadedEvent.event_start_time);
+                const endTimeUTC = new Date(loadedEvent.event_end_time);
+
+                setStartTime(loadedEvent ? new Date(startTimeUTC.getTime() - localOffset) : null);
+                setEndTime(loadedEvent ? new Date(endTimeUTC.getTime() - localOffset) : null);
+
+                setPromotionalImage(loadedEvent ? loadedEvent.event_promotional_image : null);
+                setRemarks(loadedEvent ? loadedEvent.event_remarks : "");
+
+                callServerAPI("venues", "GET", null,
+                    // On Successful Callback
+                    (result) => {
+                        onLoadingEnd("Global");
+
+                        // Debug
+                        //console.log("[Server Venue List Successful] Result.", result);
+
+                        setVenues(result.venues);
+                        if (event) {
+                            const currentEventIndex = result.venues.findIndex((venue) => venue.id === event.event_venue_id);
+                            setVenueIndex(currentEventIndex);
+                        }
+                    },
+                    // On Failed Callback
+                    (error) => {
+                        onLoadingEnd("Global");
+
+                        // Debug
+                        //console.log("[Server Venue List Failed] Error.", error)
+                    }
+                );
             },
             // On Failed Callback
             (error) => {
                 onLoadingEnd("Global");
 
                 // Debug
-                //console.log("[Server Venue List Failed] Error.", error)
+                //console.log("[Load Target Event Info Failed] Error.", error)
             }
         );
-    }, []);
+    }, [event]);
     // ============
-    const onCreateNewEvent = (event) => {
-        event.preventDefault();
+    const onModifyEvent = (jsEvent) => {
+        jsEvent.preventDefault();
 
         if (showTimeWarning || !isCorrectImageFormat)
             return;
         onLoadingStart("Global");
 
-        dispatch(createANewEvent({
+        // Offset in milliseconds
+        const localDateTime = new Date();
+        const localOffset = localDateTime.getTimezoneOffset() * 60000;
+
+        dispatch(updateEvent({
             event: {
+                event_id: event.event_id,
                 venue_id: venues[venueIndex].id,
                 name: name,
-                start_time: startTime,
-                end_time: endTime,
+                start_time: new Date(startTime.getTime() + localOffset),
+                end_time: new Date(endTime.getTime() + localOffset),
                 promotional_image: promotionalImage,
                 remarks: remarks
             }
@@ -138,14 +180,14 @@ export default function AddNewEvent() {
                     onLoadingEnd("Global");
 
                     // Debug
-                    //console.log("[Create a New Event Failed] Payload.", action.payload)
+                    //console.log("[Modify Existing Event Failed] Payload.", action.payload)
                 }
                 // On Promise Fulfilled
                 else {
                     onLoadingEnd("Global");
 
                     // Debug
-                    //console.log("[Create a New Event Successful] Payload.", action.payload);
+                    //console.log("[Modify Existing Event Successful] Payload.", action.payload);
 
                     navigate("/dashboard");
                 }
@@ -156,12 +198,12 @@ export default function AddNewEvent() {
     return (
         <>
             <Container fluid>
-                <Form onSubmit={onCreateNewEvent}>
+                <Form onSubmit={onModifyEvent}>
                     <Row>
                         <Col className="col-12 d-flex flex-column align-items-center justify-content-center col-12 mt-3 mb-3"
                             style={{ width: "100%" }}>
                             <h2 className="fw-bold text-center">
-                                Create a New Event
+                                Modifying An Existing Event
                             </h2>
                         </Col>
                         <Col className="col-12 d-flex flex-column align-items-start justify-content-center col-12 mb-3"
@@ -173,7 +215,7 @@ export default function AddNewEvent() {
                                     Event Name:
                                 </Form.Label>
                                 <Form.Control id="event-name"
-                                    value={name}
+                                    value={name ? name : ""}
                                     as="textarea"
                                     rows="1"
                                     maxLength={64}
