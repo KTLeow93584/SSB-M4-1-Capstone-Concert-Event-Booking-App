@@ -1,0 +1,133 @@
+/* ========================= */
+
+.custom-carousel {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.custom-carousel-items-group {
+    width: 100%;
+    white-space: nowrap;
+}
+
+.custom-carousel-item {
+    display: inline-flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-carousel-item-element {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-carousel-item-element-button {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: none;
+}
+
+.custom-carousel-item-element-img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.custom-carousel-item-element-caption {
+    position: absolute;
+    top: 40%;
+    left: 2%;
+}
+
+.custom-carousel-item-element-caption-text {
+    color: white;
+    font-size: 2.1vw;
+    font-weight: 500;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    letter-spacing: 2px;
+    user-select: none;
+    text-shadow: 2px 2px 5px black;
+}
+
+.custom-carousel-item-element-caption-image {
+    margin-left: -1.4vw;
+    min-width: 32px;
+    min-height: 32px;
+    max-width: 64px;
+    max-height: 64px;
+    width: 5vw;
+    height: auto;
+}
+
+.custom-carousel-previous-button,
+.custom-carousel-next-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    padding: 5px;
+
+    width: 32px;
+    height: 32px;
+}
+
+.custom-carousel-previous-button {
+    position: absolute;
+
+    top: 50%;
+    left: 2%;
+    background-image: url("../assets/images/left.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.custom-carousel-next-button {
+    position: absolute;
+
+    top: 50%;
+    right: 2%;
+
+    background-image: url("../assets/images/right.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.custom-carousel-indicator-button-group {
+    display: flex;
+    justify-content: start;
+}
+
+.custom-carousel-indicator-button {
+    border: none;
+    cursor: pointer;
+
+    background-color: #eaeaea;
+
+    width: 12px;
+    height: 12px;
+
+    border-radius: 50%;
+
+    padding: 5px;
+    margin: 5px;
+}
+
+.custom-carousel-indicator-button-active {
+    border: none;
+    cursor: pointer;
+    background-color: #ababab;
+}
+
+/* ========================= */

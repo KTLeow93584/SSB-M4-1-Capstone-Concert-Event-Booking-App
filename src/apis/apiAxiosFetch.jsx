@@ -4,7 +4,7 @@ import axios from "axios";
 import { networkErrorCodeMessages, errorNoAuthEventName, errorServerEventName } from '../data/error-loggers.js';
 import { onLoadingEnd } from '../data/loaders.js';
 // ====================================================================
-const inhouseServerMainURL = import.meta.env.VITE_SERVER_API_URL_DEVELOPMENT;
+const inhouseServerMainURL = import.meta.env.VITE_SERVER_URL;
 // ====================================================================
 const sessionTokenStorageName = "session-id-ror-event-host";
 // ====================================================================

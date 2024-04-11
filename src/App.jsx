@@ -7,7 +7,6 @@ import useLocalStorage from 'use-local-storage';
 import Container from 'react-bootstrap/Container';
 
 import Loader from './components/Loader.jsx';
-import NavigationPanel from './components/NavigationPanel.jsx';
 import Footer from './components/Footer.jsx';
 
 import GuestAuth from './auths/GuestAuth.jsx';
@@ -42,7 +41,6 @@ import { errorNoAuthEventName, errorServerEventName } from './data/error-loggers
 export function Layout() {
   return (
     <>
-      <NavigationPanel />
       <Loader />
       <Outlet />
       <Footer />

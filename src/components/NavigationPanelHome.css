@@ -1,0 +1,21 @@
+/* ========================= */
+
+.nav-panel-container {
+    position: absolute;
+    z-index: 3;
+    top: 0px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+}
+
+.nav-logo {
+    filter: invert(1);
+}
+
+.nav-panel-link {
+    text-decoration: none !important;
+    color: #dddddd !important;
+}
+
+/* ========================= */

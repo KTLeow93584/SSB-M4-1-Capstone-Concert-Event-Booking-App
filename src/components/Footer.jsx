@@ -67,8 +67,6 @@ export default function Footer() {
                 <Col className="col-xl-3 col-sm-5 col-10 d-flex justify-content-center justify-content-md-start mb-3">
                     <Image src={logoImage} className="footer-logo"
                         style={{
-                            minWidth: "48px", minHeight: "48px",
-                            maxWidth: "64px", maxHeight: "64px",
                             width: "100%", height: "auto"
                         }}
                     />

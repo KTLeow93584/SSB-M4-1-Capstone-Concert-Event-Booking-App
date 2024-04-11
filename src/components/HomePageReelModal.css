@@ -1,0 +1,27 @@
+/* ========================= */
+
+.modal-container-header {
+    background-color: transparent !important;
+    border: none !important;
+    padding-bottom: 0% !important;
+    padding-top: 0% !important;
+}
+
+.modal-container-content {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding-top: 56.25%;
+}
+
+.modal-responsive-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* ========================= */

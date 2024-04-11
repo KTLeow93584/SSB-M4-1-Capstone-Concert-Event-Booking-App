@@ -1,0 +1,122 @@
+/* ========================= */
+
+.home-video-container {
+    position: relative !important;
+}
+
+.home-brand-title {
+    font-size: 2.3em;
+    font-weight: bold;
+    line-height: 1.1em;
+}
+
+.home-brand-outline {
+    text-decoration: underline;
+    text-decoration-color: orangered;
+    text-decoration-thickness: 4px;
+}
+
+.home-brand-description {
+    font-size: 1em;
+    font-weight: 400;
+    line-height: 1.4em;
+}
+
+.home-news-container {
+    position: relative !important;
+}
+
+.home-news-element-insert-container {
+    z-index: 2;
+    position: absolute !important;
+    bottom: 5%;
+    right: 5%;
+}
+
+/* ========================= */
+
+.contact-banner-container {
+    position: relative;
+    transform-style: preserve-3d;
+    width: 100%;
+    height: 800px;
+    overflow: hidden;
+}
+
+.parallax {
+    /* The image used */
+    background-image: url("../assets/images/contact-us-banners/banner-3.webp");
+
+    /* Set a specific height */
+    min-height: 500px;
+
+    /* Create the parallax scrolling effect */
+    /*background-attachment: fixed;*/
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* ========================= */
+
+.content-absolute-title-container {
+    z-index: 2;
+    position: absolute !important;
+    top: 30%;
+    left: 10%;
+}
+
+.content-absolute-container-title-text {
+    color: white;
+    font-size: 4vw;
+    font-weight: 500;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-shadow: -1px -1px black -1px 1px black 1px -1px black 1px 1px black;
+}
+
+.content-absolute-container-description-text {
+    color: white;
+    font-size: 2.2vw;
+    font-weight: 500;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-shadow: -1px -1px black -1px 1px black 1px -1px black 1px 1px black;
+}
+
+.content-absolute-button-container {
+    z-index: 2;
+    position: absolute !important;
+    bottom: 10%;
+    right: 10%;
+}
+
+.content-absolute-button-text {
+    color: #cccccc;
+    font-size: 2.1vw;
+    font-weight: 500;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    letter-spacing: 2px;
+}
+
+.content-absolute-button-image {
+    margin-left: -1.4vw;
+    min-width: 32px;
+    min-height: 32px;
+    max-width: 64px;
+    max-height: 64px;
+    width: 5vw;
+    height: auto;
+}
+
+.content-carousel-button {
+    /* Fallback if grab is not supported */
+    cursor: "move";
+    cursor: "grab";
+}
+
+.content-rotateable-text {
+    font-size: 1.4em;
+    font-weight: 400;
+    white-space: nowrap;
+}
+
+/* ========================= */
