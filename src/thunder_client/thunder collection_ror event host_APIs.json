@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "RoR APIs",
-    "dateExported": "2024-04-04T01:07:15.918Z",
+    "dateExported": "2024-04-11T01:56:29.845Z",
     "version": "1.1",
     "folders": [],
     "requests": [
@@ -38,7 +38,7 @@
             "method": "POST",
             "sortNum": 7500,
             "created": "2024-04-03T19:29:37.300Z",
-            "modified": "2024-04-03T21:55:52.150Z",
+            "modified": "2024-04-08T18:57:12.994Z",
             "headers": [
                 {
                     "name": "Device",
@@ -48,7 +48,7 @@
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"email\": \"testEmail@test.com\",\n  \"country_id\": \"1\",\n  \"contact_number\": \"12222222\",\n  \"password\": \"111\",\n\n  // Individuals\n  \"name\": \"Adam Smith\",\n  \"nric\": \"1234056666\"\n}",
+                "raw": "{\n  \"email\": \"testEmail@test.com\",\n  \"country_id\": \"1\",\n  \"contact_number\": \"12222222\",\n  \"password\": \"abcABC@123\",\n\n  // Individuals\n  \"name\": \"Adam Smith\",\n  \"nric\": \"1234056666\"\n}",
                 "form": []
             },
             "tests": []
@@ -62,7 +62,7 @@
             "method": "POST",
             "sortNum": 8750,
             "created": "2024-04-03T19:31:35.893Z",
-            "modified": "2024-04-03T21:55:51.708Z",
+            "modified": "2024-04-08T18:57:55.678Z",
             "headers": [
                 {
                     "name": "Device",
@@ -72,7 +72,55 @@
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"email\": \"testEmail2@test.com\",\n  \"country_id\": \"1\",\n  \"contact_number\": \"12222222\",\n  \"social_provider\": \"google.com\",\n  \"social_uid\": \"123456789\",\n\n  // Individuals\n  \"name\": \"Jane Smith\",\n  \"nric\": \"4321056666\"\n}",
+                "raw": "{\n  \"email\": \"testEmail2@test.com\",\n  \"password\": \"abcABC@123\",\n  \"country_id\": \"1\",\n  \"contact_number\": \"12222222\",\n  \"social_provider\": \"google.com\",\n  \"social_uid\": \"123456789\",\n\n  // Individuals\n  \"name\": \"Jane Smith\",\n  \"nric\": \"4321056666\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "b4914efb-2cfc-4e82-a41c-9490ee18e8f6",
+            "colId": "b1eab066-4e39-4201-85bb-8872d8c65b55",
+            "containerId": "",
+            "name": "Register (Individual - Invalid Registration Type #1, Missing Type)",
+            "url": "{{ror_url}}/register",
+            "method": "POST",
+            "sortNum": 9375,
+            "created": "2024-04-07T16:52:27.595Z",
+            "modified": "2024-04-07T16:53:47.055Z",
+            "headers": [
+                {
+                    "name": "Device",
+                    "value": "{{device-id}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"testEmail@test.com\",\n  \"country_id\": \"1\",\n  \"contact_number\": \"12222222\",\n  \"password\": \"111\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "f0f3e9c1-a431-4aea-8cf4-564a75874f47",
+            "colId": "b1eab066-4e39-4201-85bb-8872d8c65b55",
+            "containerId": "",
+            "name": "Register (Individual - Invalid Registration Type #2, Email/Password + Social)",
+            "url": "{{ror_url}}/register",
+            "method": "POST",
+            "sortNum": 9687.5,
+            "created": "2024-04-07T16:52:57.261Z",
+            "modified": "2024-04-07T16:55:38.531Z",
+            "headers": [
+                {
+                    "name": "Device",
+                    "value": "{{device-id}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"testEmail@test.com\",\n  \"country_id\": \"1\",\n  \"contact_number\": \"12222222\",\n  \"password\": \"111\",\n\n  // Individuals\n  \"name\": \"Adam Smith\",\n  \"nric\": \"1234056666\",\n\n  // Organizations\n  \"organization_name\": \"Adam Smith\",\n  \"organization_registration_number\": \"1234056666\"\n}",
                 "form": []
             },
             "tests": []
@@ -203,6 +251,102 @@
             "body": {
                 "type": "json",
                 "raw": "{\n  \"name\": \"Dummy Staff ABCDEF\",\n  \"profile_picture\": null\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "3dbb1ee3-3744-443b-baf9-15bbcfa8e7e0",
+            "colId": "b1eab066-4e39-4201-85bb-8872d8c65b55",
+            "containerId": "",
+            "name": "Verify Account's Email",
+            "url": "{{ror_url}}/verify",
+            "method": "POST",
+            "sortNum": 45000,
+            "created": "2024-04-07T03:36:02.416Z",
+            "modified": "2024-04-07T03:42:03.439Z",
+            "headers": [
+                {
+                    "name": "Device",
+                    "value": "{{device-id}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"token\": \"11584e37-2ced-40ce-a8ee-11c23a843d33\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "d04eb17d-497a-4698-9448-6e6666217789",
+            "colId": "b1eab066-4e39-4201-85bb-8872d8c65b55",
+            "containerId": "",
+            "name": "Forgot Password",
+            "url": "{{ror_url}}/password/forget",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2024-04-06T08:34:44.606Z",
+            "modified": "2024-04-06T08:35:15.041Z",
+            "headers": [
+                {
+                    "name": "Device",
+                    "value": "{{device-id}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"leowkeantat@gmail.com\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "68b3b1c4-1333-484c-8233-4366f0abf8af",
+            "colId": "b1eab066-4e39-4201-85bb-8872d8c65b55",
+            "containerId": "",
+            "name": "Perform Password Reset Request",
+            "url": "{{ror_url}}/password/reset",
+            "method": "POST",
+            "sortNum": 60000,
+            "created": "2024-04-06T09:14:54.706Z",
+            "modified": "2024-04-07T18:22:36.358Z",
+            "headers": [
+                {
+                    "name": "Device",
+                    "value": "{{device-id}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"leowkeantat@gmail.com\",\n  \"password\": \"333333\",\n  \"token\": \"69fc396c-7e9a-4cd2-b42e-312dc6ab9297\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "14730082-32d4-4903-8315-5301891208b4",
+            "colId": "b1eab066-4e39-4201-85bb-8872d8c65b55",
+            "containerId": "",
+            "name": "Verify Password Reset Request",
+            "url": "{{ror_url}}/password/reset/verify",
+            "method": "POST",
+            "sortNum": 70000,
+            "created": "2024-04-07T18:22:00.222Z",
+            "modified": "2024-04-07T18:22:35.966Z",
+            "headers": [
+                {
+                    "name": "Device",
+                    "value": "{{device-id}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"token\": \"69fc396c-7e9a-4cd2-b42e-312dc6ab9297\"\n}",
                 "form": []
             },
             "tests": []
