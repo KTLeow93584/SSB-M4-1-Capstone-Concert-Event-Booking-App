@@ -115,8 +115,10 @@ function PromoSection({ onShowHomePageReel }) {
                         className="content-explore-button" />
                 </div>
                 {/* Video Source */}
-                <video src={homePageVideo} autoPlay muted
+                <video src={homePageVideo}
+                    autoPlay muted loop
                     width="100%" height="auto"
+                    type="video/mp4"
                     className="d-block"
                 />
             </div>
