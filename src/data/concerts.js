@@ -26,7 +26,7 @@ const concertItems = [
     },
     {
         imageURL: concertEventImage5,
-        caption: "Jay Chao - Bukit Jalil, Malaysia"
+        caption: "Jay Chou - Bukit Jalil, Malaysia"
     },
     {
         imageURL: concertEventImage6,
