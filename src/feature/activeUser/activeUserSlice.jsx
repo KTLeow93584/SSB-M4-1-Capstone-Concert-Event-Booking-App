@@ -94,6 +94,8 @@ export const updateUserInfo = createAsyncThunk(
         // Prepare data to be sent to API.
         const data = {
             name: params.name,
+            country_id: params.country_id,
+            contact_number: params.contact_number,
             profile_picture: params.profile_picture
         };
         const result = await callServerAPI("profile", "PUT", data);
@@ -131,17 +133,18 @@ const activeUserSlice = createSlice({
         });
 
         builder.addCase(logout.fulfilled, (state, action) => {
-            if (!action.payload.success)
-                return state;
             // Debug
             //console.log("[On Logout] Payload.", action.payload);
+
+            if (!action.payload.success)
+                return state;
 
             return { user: null };
         });
 
         builder.addCase(getUserInfo.fulfilled, (state, action) => {
             // Debug
-            console.log("[On Get User Profile] Payload.", action.payload);
+            //console.log("[On Get User Profile] Payload.", action.payload);
 
             return { user: action.payload.client_data.user };
         });

@@ -11,6 +11,7 @@ import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
+import NavigationPanelUser from '../components/navs/NavigationPanelUser.jsx';
 import VenuePreviewModal from '../components/modals/VenuePreviewModal.jsx';
 import DeleteEventModal from '../components/modals/DeleteEventModal.jsx';
 
@@ -90,10 +91,14 @@ export default function Dashboard() {
     // ================
     return (
         <>
-            <Container fluid>
+            <NavigationPanelUser />
+            <Container fluid style={{ flex: 1 }}>
                 <Row className="d-flex justify-content-center my-3">
-                    <Col className="col-4 d-flex justify-content-center">
-                        <Button onClick={onAddNewEvent}>
+                    <Col className="col-4 d-flex flex-column align-items-center justify-content-center w-100 mx-5">
+                        <h3 className="text-center mb-3">
+                            Kickstart your collaboration with us by creating an event below!
+                        </h3>
+                        <Button onClick={onAddNewEvent} style={{ maxWidth: "200px" }}>
                             Add a new Event
                         </Button>
                     </Col>
@@ -110,7 +115,7 @@ export default function Dashboard() {
                         ))
                     }
                 </Row>
-            </Container>
+            </Container >
             <VenuePreviewModal show={showVenueModal} venue={targetVenuePreview} onCloseModalCallback={onCloseVenuePreviewModal} />
             <DeleteEventModal show={showDeleteEvent} event={targetEvent}
                 onCloseModalCallback={onCloseDeleteEventModalCallback} />

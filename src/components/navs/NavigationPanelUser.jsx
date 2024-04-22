@@ -15,6 +15,8 @@ import { updateSessionToken } from '../../apis/apiAxiosFetch.jsx';
 
 import logoImage from '../../assets/images/logo.webp';
 import defaultProfileImage from '../../assets/images/user-profile-default.webp';
+
+import './NavigationPanelUser.css';
 // =========================================
 export default function NavigationPanelUser() {
     // ================
@@ -53,7 +55,7 @@ export default function NavigationPanelUser() {
                 <Navbar.Brand as={Link} to={"/"} className="ms-4">
                     <Image src={logoImage} rounded
                         style={{
-                            minWidth: "32px", minHeight: "32px", maxWidth: "48px", maxHeight: "48px",
+                            minWidth: "249px", minHeight: "32px", maxWidth: "374px", maxHeight: "48px",
                             width: "100%", height: "auto", cursor: "pointer"
                         }} />
                 </Navbar.Brand>
@@ -69,19 +71,19 @@ export default function NavigationPanelUser() {
                                     }}
                                 />
                                 <p className="my-0 py-0">
-                                    Welcome, <Link to={"/profile"} className="fw-bold nav-panel-link">{user.name}</Link>
+                                    Welcome, <Link to={"/profile"} className="nav-user-panel-link">{user.name}</Link>
                                 </p>
                             </>
                         ) : null
                     }
                     {
                         user ? (
-                            <Button variant="link" className="nav-panel-link"
+                            <Button variant="link" className="nav-user-panel-link"
                                 onClick={onLogoutCallback}>
                                 Logout
                             </Button>
                         ) : (
-                            <Button variant="link" className="nav-panel-link"
+                                <Button variant="link" className="nav-user-panel-link"
                                 onClick={onLoginCallback}>
                                 Login
                             </Button>

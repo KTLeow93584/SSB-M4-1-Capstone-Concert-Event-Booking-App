@@ -32,7 +32,7 @@ export default function DeleteEventModal({ show, event, onCloseModalCallback, on
                 // On Promise Rejected/Failed, Error Exception.
                 if (action.payload.error) {
                     // Debug
-                    console.log("[On Event Deletion Failed] Payload.", action.payload);
+                    //console.log("[On Event Deletion Failed] Payload.", action.payload);
 
                     setError({
                         name: action.payload.code,
@@ -42,7 +42,7 @@ export default function DeleteEventModal({ show, event, onCloseModalCallback, on
                 // On Promise Fulfilled
                 else {
                     // Debug
-                    console.log("[On Event Deletion Successful] Payload.", action.payload);
+                    //console.log("[On Event Deletion Successful] Payload.", action.payload);
 
                     if (onAfterDeleteCallback)
                         onAfterDeleteCallback();

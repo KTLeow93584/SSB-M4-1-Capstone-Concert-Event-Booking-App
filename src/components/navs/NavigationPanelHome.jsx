@@ -115,7 +115,7 @@ export default function NavigationPanelHome() {
                                 </ListGroup.Item>
                             ) : null
                         }
-                        <ListGroup.Item action onClick={user ? onLoginCallback : onLogoutCallback}
+                        <ListGroup.Item action onClick={user ? onLogoutCallback : onLoginCallback}
                             style={{ border: "none" }}>
                             <h2>{user ? "Logout" : "Login"}</h2>
                         </ListGroup.Item>

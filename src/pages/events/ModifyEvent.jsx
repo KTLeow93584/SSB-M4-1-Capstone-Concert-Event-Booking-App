@@ -12,6 +12,7 @@ import Form from 'react-bootstrap/Form';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Image from 'react-bootstrap/Image';
 
+import NavigationPanelUser from '../../components/navs/NavigationPanelUser.jsx';
 import VenuePreviewModal from '../../components/modals/VenuePreviewModal.jsx';
 
 import { callServerAPI } from '../../apis/apiAxiosFetch.jsx';
@@ -197,21 +198,20 @@ export default function ModifyEvent() {
     // ================
     return (
         <>
+            <NavigationPanelUser />
             <Container fluid>
                 <Form onSubmit={onModifyEvent}>
-                    <Row>
-                        <Col className="col-12 d-flex flex-column align-items-center justify-content-center col-12 mt-3 mb-3"
-                            style={{ width: "100%" }}>
+                    <Row className="d-flex flex-column align-items-center mb-3">
+                        <Col className="col-12 d-flex flex-column align-items-center mt-3 mb-3" style={{ width: "80%" }}>
                             <h2 className="fw-bold text-center">
                                 Modifying An Existing Event
                             </h2>
                         </Col>
-                        <Col className="col-12 d-flex flex-column align-items-start justify-content-center col-12 mb-3"
-                            style={{ width: "100%" }}>
+                        <Col className="col-12 d-flex flex-column align-items-center mb-3" style={{ width: "80%" }}>
                             {/* -------------------------------------- */}
                             {/* Event Name */}
                             <div className="d-flex mb-2 mt-3 w-100">
-                                <Form.Label htmlFor="event-name" className="me-3" style={{ width: "15%" }}>
+                                <Form.Label htmlFor="event-name" className="me-3" style={{ width: "15%", minWidth: "60px" }}>
                                     Event Name:
                                 </Form.Label>
                                 <Form.Control id="event-name"
@@ -221,13 +221,13 @@ export default function ModifyEvent() {
                                     maxLength={64}
                                     type="text"
                                     onChange={(event) => setName(event.target.value)}
-                                    style={{ resize: "none", height: "fit-content", width: "50%" }}
+                                    style={{ resize: "none", height: "fit-content" }}
                                 />
                             </div>
                             {/* -------------------------------------- */}
                             {/* Start + End Time (And Warning Message) */}
                             <div className="d-flex mb-2 w-100">
-                                <Form.Label htmlFor="event-start-time" className="me-3" style={{ width: "15%" }}>
+                                <Form.Label htmlFor="event-start-time" className="me-3" style={{ width: "15%", minWidth: "60px" }}>
                                     Start Time/Date:
                                 </Form.Label>
                                 <Form.Control id="event-start-time"
@@ -249,11 +249,10 @@ export default function ModifyEvent() {
 
                                         setStartTime(localDateTime);
                                     }}
-                                    style={{ width: "50%" }}
                                 />
                             </div>
                             <div className="d-flex mb-2 w-100">
-                                <Form.Label htmlFor="event-end-time" className="me-3" style={{ width: "15%" }}>
+                                <Form.Label htmlFor="event-end-time" className="me-3" style={{ width: "15%", minWidth: "60px" }}>
                                     End Time/Date:
                                 </Form.Label>
                                 <Form.Control id="event-end-time"
@@ -275,7 +274,6 @@ export default function ModifyEvent() {
 
                                         setEndTime(localDateTime);
                                     }}
-                                    style={{ width: "50%" }}
                                 />
                             </div>
                             {
@@ -290,13 +288,13 @@ export default function ModifyEvent() {
                             {/* -------------------------------------- */}
                             {/* Promotional Image */}
                             <div className="d-flex mb-2 w-100">
-                                <Form.Label htmlFor="promotional-banner-image" className="me-3" style={{ width: "15%" }}>
+                                <Form.Label htmlFor="promotional-banner-image" className="me-3" style={{ width: "15%", minWidth: "60px" }}>
                                     Promotional Banner Image:<span> </span>
                                 </Form.Label>
                                 <Form.Control id="promotional-banner-image"
                                     className={`${isCorrectImageFormat ? "text-secondary" : "text-danger fw-bold"} mb-2`}
+                                    style={{ resize: "none", height: "fit-content" }}
                                     type="file" accept="image/png, image/jpg, image/jpeg, image/webp, image/svg"
-                                    style={{ width: "50%" }}
                                     onChange={updatePromotionalImage} />
                             </div>
 
@@ -319,7 +317,7 @@ export default function ModifyEvent() {
                                 (!isCorrectImageFormat) ?
                                     (
                                         <Form.Label className="text-danger">
-                                            The current profile picture does not meet the requirements.
+                                            The current event promotional image does not meet the requirements.
                                         </Form.Label>
                                     ) :
                                     null
@@ -335,7 +333,7 @@ export default function ModifyEvent() {
                             {
                                 venues.length > 0 ? (
                                     <div className="d-flex mb-2 w-100">
-                                        <p className="my-0 py-0 me-3" style={{ width: "15%" }}>
+                                        <p className="my-0 py-0 me-3" style={{ width: "15%", minWidth: "60px" }}>
                                             Venue:
                                         </p>
                                         <Dropdown id="dropdown-venue" onSelect={onSelectVenue} className="me-3">
@@ -363,7 +361,7 @@ export default function ModifyEvent() {
                             {/* -------------------------------------- */}
                             {/* Remarks */}
                             <div className="d-flex mb-2 mt-3 w-100">
-                                <Form.Label htmlFor="remarks" className="me-3" style={{ width: "15%" }}>
+                                <Form.Label htmlFor="remarks" className="me-3" style={{ width: "15%", minWidth: "60px" }}>
                                     Remark(s):
                                 </Form.Label>
                                 <Form.Control id="remarks"
@@ -373,7 +371,7 @@ export default function ModifyEvent() {
                                     maxLength={256}
                                     type="text"
                                     onChange={(event) => setRemarks(event.target.value)}
-                                    style={{ resize: "none", height: "fit-content", width: "50%" }}
+                                    style={{ resize: "none", height: "fit-content" }}
                                 />
                             </div>
                             {/* -------------------------------------- */}
