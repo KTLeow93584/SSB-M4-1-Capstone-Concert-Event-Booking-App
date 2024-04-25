@@ -61,14 +61,14 @@ export default function NavigationPanelHome() {
     // ================
     return (
         <>
-            <div className="nav-panel-container">
+            <div className="nav-panel-container" style={{ zIndex: 4 }}>
                 <Container fluid>
                     <Row>
                         <Col className="col-12 d-flex align-items-center">
                             <Image src={logoImage} rounded
                                 className="nav-logo"
                                 style={{
-                                    maxWidth: "390px", maxHeight: "50px",
+                                    maxWidth: "256px", maxHeight: "50px",
                                     width: "100%", height: "auto", cursor: "pointer"
                                 }} />
                             <Button variant="link" className="nav-panel-link ms-auto"

@@ -26,7 +26,7 @@ import homePageVideo from '../../assets/videos/landing/homepage-reel.mp4';
 import awardsImage from '../../assets/images/landing/home-awards.webp';
 import newsImage from '../../assets/images/landing/new-concert.webp';
 import horizontalBarImage from '../../assets/images/landing/horizontal-bar.webp';
-import contactBannerrImage from '../../assets/images/landing/contact-banner.webp';
+import contactBannerImage from '../../assets/images/landing/contact-banner.webp';
 
 import './Home.css';
 // =========================================
@@ -63,37 +63,44 @@ export default function Home() {
     return (
         <div className="position-relative">
             <NavigationPanelHome />
-            <Container fluid className="d-flex flex-column m-0 p-0" style={{ flex: 1, overflowX: "hidden" }}>
-                {/* --------------------------------- */}
-                {/* Promotional Video Reel */}
-                <Row style={{ position: "relative" }}>
-                    <PromoSection onShowHomePageReel={onShowHomePageReel} />
-                </Row>
-                {/* --------------------------------- */}
-                {/* Brand/Vision */}
-                <Row className="mt-5" style={{ position: "relative" }}>
-                    <CompanyBrandSection />
-                </Row>
-                {/* --------------------------------- */}
-                {/* Latest Gig */}
-                <Row className="mt-5" style={{ position: "relative" }}>
-                    <GigSection />
-                </Row>
-                {/* --------------------------------- */}
-                {/* Past Events */}
-                <Row className="mt-5" style={{ position: "relative" }}>
-                    <PastEventsCarouselSection isSmallWidth={isSmallWidth} />
-                </Row>
+            <Container fluid className="d-flex flex-column m-0 p-0" style={{ flex: 1 }}>
+                <div style={{ zIndex: 3 }}>
+                    {/* --------------------------------- */}
+                    {/* Promotional Video Reel */}
+                    <Row style={{ position: "relative" }}>
+                        <PromoSection onShowHomePageReel={onShowHomePageReel} />
+                    </Row>
+                    {/* --------------------------------- */}
+                    {/* Brand/Vision */}
+                    <Row className="mt-5" style={{ position: "relative" }}>
+                        <CompanyBrandSection />
+                    </Row>
+                    {/* --------------------------------- */}
+                    {/* Latest Gig */}
+                    <Row className="mt-5" style={{ position: "relative" }}>
+                        <GigSection />
+                    </Row>
+                    {/* --------------------------------- */}
+                    {/* Past Events */}
+                    <Row className="mt-5" style={{ position: "relative" }}>
+                        <PastEventsCarouselSection isSmallWidth={isSmallWidth} />
+                    </Row>
+                    {/* --------------------------------- */}
+                </div>
                 {/* --------------------------------- */}
                 {/* Contact Banner */}
-                <Row className="mt-5" style={{ position: "relative" }}>
-                    <ContactSection />
-                </Row>
+                <div className="my-5" style={{ zIndex: 2 }}>
+                    <Row className="" style={{ position: "relative" }}>
+                        <ContactSection />
+                    </Row>
+                </div>
                 {/* --------------------------------- */}
-                {/* Postings */}
-                <Row className="my-5" style={{ position: "relative" }}>
-                    <PostsSection isSmallWidth={isSmallWidth} />
-                </Row>
+                <div className="mb-5" style={{ zIndex: 3 }}>
+                    {/* Postings */}
+                    <Row style={{ position: "relative" }}>
+                        <PostsSection isSmallWidth={isSmallWidth} />
+                    </Row>
+                </div>
                 {/* --------------------------------- */}
             </Container>
             <HomePageReelModal isVisible={isHomePageReelVisible} onHide={onHideHomePageReel} />
@@ -245,13 +252,42 @@ function PastEventsCarouselSection({ isSmallWidth }) {
 // =========================================
 function ContactSection() {
     // ================
-    const { ref } = useParallax({ speed: 25 });
+    const [screenWidth, setScreenWidth] = useState(1920);
+
+    const containerMaxWidthRef = 1280;
+    const maxContainerHeight = 512;
+
+    const { ref } = useParallax({ speed: Math.min(screenWidth / containerMaxWidthRef, 1) * 12 });
     const parallaxController = useParallaxController();
+    // ================
+
+    const determineScreenWidth = () => {
+        setScreenWidth(window.innerWidth);
+
+        // Debug
+        //console.log("[Screen] Width: " + window.innerWidth);
+    };
+
+    useEffect(() => {
+        // Call the function initially and on window resize
+        determineScreenWidth();
+        window.addEventListener("resize", determineScreenWidth);
+
+        // Cleanup on unmount
+        return () => {
+            window.removeEventListener("resize", determineScreenWidth);
+        };
+    }, []);
     // ================
     return (
         <Col className="col-12">
-            <div className="contact-parallax-bg-container">
-                <Image src={contactBannerrImage}
+            <div className="contact-parallax-bg-container"
+                style={{
+                    height: `${Math.min(screenWidth / containerMaxWidthRef, 1) * maxContainerHeight}px`,
+                    minHeight: `${(maxContainerHeight / 2)}px`,
+                    maxHeight: `${(maxContainerHeight * 2)}px`
+                }}>
+                <Image src={contactBannerImage}
                     className="contact-parallax-bg-image"
                     ref={ref} onLoad={() => parallaxController.update()}
                 />
@@ -272,7 +308,7 @@ function PostsSection({ isSmallWidth }) {
     return (
         <Col className="col-12">
             <Row>
-                <Col className="col-md-1 col-11 ms-md-0 ms-auto">
+                <Col className={`col-md-1 col-11 ms-md-0 ms-auto ${isSmallWidth ? "mb-4" : ""}`}>
                     {
                         isSmallWidth ? (
                             <>

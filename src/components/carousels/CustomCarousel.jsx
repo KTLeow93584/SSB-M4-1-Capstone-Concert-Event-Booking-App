@@ -268,7 +268,7 @@ function CarouselItemElement({ item, elementWidth, itemIndex }) {
     const navigate = useNavigate();
 
     return (
-        <div className="custom-carousel-item-element bg-secondary"
+        <div className="custom-carousel-item-element"
             style={{
                 width: `${elementWidth}%`,
                 backgroundColor: `${showDebug ? (itemIndex % 2 === 0 ? "green" : "teal") : "transparent"}`
