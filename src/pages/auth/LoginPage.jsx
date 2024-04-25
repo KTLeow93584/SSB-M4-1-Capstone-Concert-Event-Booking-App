@@ -112,7 +112,7 @@ function LoginForm({ navigate }) {
                     onLoadingEnd("Global");
 
                     // Debug
-                    console.log("[Login Failed] Payload.", action.payload)
+                    //console.log("[Login Failed] Payload.", action.payload)
 
                     onFailedLoginCallback(action.payload.error, null);
                 }
@@ -212,7 +212,7 @@ function LoginForm({ navigate }) {
 
     const onFailedLoginCallback = (error, user = null) => {
         // Debug
-        console.log("[Failed Login] Error.", error);
+        //console.log("[On Login Failed] Error.", error);
 
         switch (error.code) {
             case "no-user-found":

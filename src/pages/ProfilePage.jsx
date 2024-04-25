@@ -76,14 +76,14 @@ export default function ProfilePage() {
                     onLoadingEnd("Global");
 
                     // Debug
-                    console.log("[Get User Info Failed] Payload.", action.payload);
+                    //console.log("[Get User Info Failed] Payload.", action.payload);
                 }
                 // On Promise Fulfilled
                 else {
                     onLoadingEnd("Global");
 
                     // Debug
-                    console.log("[Get User Info Successful] Payload.", action.payload);
+                    //console.log("[Get User Info Successful] Payload.", action.payload);
 
                     setName(action.payload.client_data.user.name);
                     setEmail(action.payload.client_data.user.email);
@@ -131,14 +131,14 @@ export default function ProfilePage() {
                     onLoadingEnd("Global");
 
                     // Debug
-                    console.log("[On Update User Profile Failed] Payload.", action.payload)
+                    //console.log("[On Update User Profile Failed] Payload.", action.payload)
                 }
                 // On Promise Fulfilled
                 else {
                     onLoadingEnd("Global");
 
                     // Debug
-                    console.log("[On Update User Profile Successful] Payload.", action.payload);
+                    //console.log("[On Update User Profile Successful] Payload.", action.payload);
                 }
             }
         );

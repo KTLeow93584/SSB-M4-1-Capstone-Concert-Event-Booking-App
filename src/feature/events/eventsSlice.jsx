@@ -156,7 +156,7 @@ const eventsSlice = createSlice({
             if (!action.payload.success)
                 return state;
             // Debug
-            console.log("[Create a New Event] Payload.", action.payload);
+            //console.log("[Create a New Event] Payload.", action.payload);
 
             state.events.unshift(action.payload.client_data.event);
         });

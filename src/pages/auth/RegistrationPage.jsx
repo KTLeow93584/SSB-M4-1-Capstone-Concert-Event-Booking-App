@@ -230,13 +230,13 @@ function RegistrationForm() {
                     onLoadingEnd("Global");
 
                     // Debug
-                    console.log("[On Registration Failed] Payload.", action.payload);
+                    //console.log("[On Registration Failed] Payload.", action.payload);
                     onRegisterFailed(action.payload.error);
                 }
                 // On Promise Fulfilled
                 else {
                     // Debug
-                    console.log("[On Registration Successful] Payload.", action.payload);
+                    //console.log("[On Registration Successful] Payload.", action.payload);
 
                     onLoadingEnd("Global");
 
