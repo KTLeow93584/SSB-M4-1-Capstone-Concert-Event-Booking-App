@@ -36,8 +36,11 @@ export default function SVGButtonArrow({ width = 150, height = 150, onClick, cla
     const radius = adjustCoordinate(75);
 
     return (
-        <div onClick={onClick} style={{ width: `${width}px`, height: `${height}px` }}>
-            <svg className={`${className} rounded-circle`} width={width} height={height} xmlns="http://www.w3.org/2000/svg">
+        <div onClick={onClick} style={{ width: "10vw", height: "10vh" }}>
+            <svg className={`${className}`}
+                viewBox={`0 0 ${width} ${height}`}
+                xmlns="http://www.w3.org/2000/svg"
+                preserveAspectRatio="xMidYMid meet">
                 {/* Circular Outline */}
                 <circle id="button-outline" r={radius} cx={width / 2} cy={height / 2} stroke="#cccccc" strokeWidth="4" fill="transparent" />
 

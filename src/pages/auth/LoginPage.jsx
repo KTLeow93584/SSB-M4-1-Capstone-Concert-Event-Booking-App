@@ -15,6 +15,7 @@ import Image from 'react-bootstrap/Image';
 import { updateSessionToken } from "../../apis/apiAxiosFetch.jsx";
 
 import SessionTimeoutModal from '../../components/modals/SessionTimeoutModal.jsx';
+import NavigationPanelHome from '../../components/navs/NavigationPanelHome.jsx';
 
 import { onFacebookAuthPrompt, onGoogleAuthPrompt } from '../../apis/authAPIHandler.jsx';
 import { onLoadingStart, onLoadingEnd } from '../../data/loaders.js';
@@ -46,7 +47,8 @@ export default function LoginPage() {
     // ====================
     return (
         <>
-            <Container className="authentication-container" fluid style={{ flex: 1 }}>
+            <NavigationPanelHome bgColor="#222222" />
+            <Container className="authentication-container mt-5" fluid style={{ flex: 1 }}>
                 <Row style={{ minHeight: "80vh" }}>
                     {/* --------------------------------------------- */}
                     {/* Left-side of the Login Page -> Header */}

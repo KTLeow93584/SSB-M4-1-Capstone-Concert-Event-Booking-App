@@ -15,7 +15,7 @@ export default function CustomCarousel({ items, maxCarouselItemPerRow }) {
     const carouselTransitionType = "transform 0.3s ease";
 
     const [isMouseDownOnCarousel, setIsMouseDownOnCarousel] = useState(false);
-    const [currentMousePosition, setCurrentMousePosition] = useState({ x: 0, y: 0 });
+    const [currentPosition, setCurrentPosition] = useState({ x: 0, y: 0 });
     const [currentBoundsX, setCurrentBoundsX] = useState({ startX: 0, width: 0 });
     const [firstDeltaX, setFirstDeltaX] = useState(0);
     const [latestDeltaX, setLatestDeltaX] = useState(0);
@@ -43,12 +43,28 @@ export default function CustomCarousel({ items, maxCarouselItemPerRow }) {
     };
 
     // ================
-    const onMouseMovedCarousel = (event) => {
+    const onUserCursorMovedCarousel = (event) => {
         if (!isMouseDownOnCarousel || event.clientX === startX.current)
             return;
 
-        const mousePosition = { x: event.clientX, y: event.clientY };
-        const deltaX = mousePosition.x - currentMousePosition.x;
+        // Debug
+        //console.log("[On Mouse/Touch Movement] Called. Event Type.", event.type);
+
+        let positionX = 0;
+        let positionY = 0;
+
+        if (event.type === 'touchmove') {
+            const { touches, changedTouches } = event.originalEvent ?? event;
+            const touch = touches[0] ?? changedTouches[0];
+
+            positionX = touch.pageX;
+            positionY = touch.pageY;
+        } else if (event.type == 'mousemove') {
+            positionX = event.clientX;
+            positionY = event.clientY;
+        }
+        const position = { x: positionX, y: positionY };
+        const deltaX = position.x - currentPosition.x;
 
         setLatestDeltaX(-deltaX);
         if (firstDeltaX === 0)
@@ -69,16 +85,32 @@ export default function CustomCarousel({ items, maxCarouselItemPerRow }) {
         setActiveIndex(newIndexPosition);
 
         // Debug
-        //console.log("[On Mouse Movement] Values. [Delta, Previous Mouse Position, Current Mouse Position, Original Index, New Index, Element Width]",
-        //  [deltaX, currentMousePosition.x, mousePosition.x, activeIndex, newIndexPosition, carouselElementRef.current.offsetWidth]);
+        //console.log("[On Mouse/Touch Movement] Values. [Delta, Previous Mouse/Touch Position, Current Mouse/Touch Position, Original Index, New Index, Element Width]",
+        //  [deltaX, currentPosition.x, position.x, activeIndex, newIndexPosition, carouselElementRef.current.offsetWidth]);
 
-        setCurrentMousePosition(mousePosition);
+        setCurrentPosition(position);
     };
     // ================
-    const onMouseDownCarousel = (event) => {
-        const mousePosition = { x: event.clientX, y: event.clientY };
+    const onUserCursorDownCarousel = (event) => {
+        // Debug
+        //console.log("[On Mouse/Touch Down] Called.");
 
-        setCurrentMousePosition(mousePosition);
+        let positionX = 0;
+        let positionY = 0;
+
+        if (event.type === 'touchstart') {
+            const { touches, changedTouches } = event.originalEvent ?? event;
+            const touch = touches[0] ?? changedTouches[0];
+
+            positionX = touch.pageX;
+            positionY = touch.pageY;
+        } else if (event.type == 'mousedown') {
+            positionX = event.clientX;
+            positionY = event.clientY;
+        }
+        const position = { x: positionX, y: positionY };
+
+        setCurrentPosition(position);
         setIsMouseDownOnCarousel(true);
 
         // Debug
@@ -105,8 +137,11 @@ export default function CustomCarousel({ items, maxCarouselItemPerRow }) {
     // ================
     const translatePercent = activeIndex * 100;
 
-    const onMouseUpCarousel = useCallback(() => {
+    const onUserCursorUpCarousel = useCallback(() => {
         setIsMouseDownOnCarousel(false);
+
+        // Debug
+        //console.log("[On Mouse/Touch Up] Called.");
 
         let newIndex = activeIndex;
 
@@ -151,20 +186,24 @@ export default function CustomCarousel({ items, maxCarouselItemPerRow }) {
     }, [items.length]);
 
     useEffect(() => {
-        window.addEventListener("mouseup", onMouseUpCarousel);
+        window.addEventListener("mouseup", onUserCursorUpCarousel);
+        window.addEventListener("touchend", onUserCursorUpCarousel);
 
         return (() => {
-            window.removeEventListener("mouseup", onMouseUpCarousel);
+            window.removeEventListener("mouseup", onUserCursorUpCarousel);
+            window.removeEventListener("touchend", onUserCursorUpCarousel);
         })
-    }, [onMouseUpCarousel]);
+    }, [onUserCursorUpCarousel]);
     // ================
     return (
         <Col className="col-12 custom-carousel" ref={carouselElementRef}>
             {/* -------------------------------------- */}
             {/* Carousel Content Group */}
             <div className="custom-carousel-items-group" ref={carouselElementItemsRef}
-                onMouseDown={onMouseDownCarousel}
-                onMouseMove={onMouseMovedCarousel}
+                onMouseDown={onUserCursorDownCarousel}
+                onTouchStart={onUserCursorDownCarousel}
+                onTouchMove={onUserCursorMovedCarousel}
+                onMouseMove={onUserCursorMovedCarousel}
                 style={{
                     transform: `translate(-${translatePercent}%)`,
                     cursor: (isMouseDownOnCarousel ? "grabbing" : "grab"),

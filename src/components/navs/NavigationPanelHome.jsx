@@ -21,7 +21,7 @@ import logoImage from '../../assets/images/logo.webp';
 
 import './NavigationPanelHome.css';
 // =========================================
-export default function NavigationPanelHome() {
+export default function NavigationPanelHome({ bgColor = "rgba(0, 0, 0, 0)" }) {
     // ================
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -59,14 +59,18 @@ export default function NavigationPanelHome() {
         );
     };
     // ================
+    const onReturnToHomePage = () => {
+        navigate("/");
+    };
+    // ================
     return (
         <>
-            <div className="nav-panel-container" style={{ zIndex: 4 }}>
+            <div className="nav-panel-container" style={{ zIndex: 4, backgroundColor: bgColor }}>
                 <Container fluid>
                     <Row>
                         <Col className="col-12 d-flex align-items-center">
-                            <Image src={logoImage} rounded
-                                className="nav-logo"
+                            <Image src={logoImage} rounded onClick={onReturnToHomePage}
+                                role="button" className="nav-logo"
                                 style={{
                                     maxWidth: "256px", maxHeight: "50px",
                                     width: "100%", height: "auto", cursor: "pointer"
@@ -78,7 +82,7 @@ export default function NavigationPanelHome() {
                         </Col>
                     </Row>
                 </Container>
-            </div>
+            </div >
             <Offcanvas show={optionVisibility}
                 onHide={onHideOptions}
                 placement="end"

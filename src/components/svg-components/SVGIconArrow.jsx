@@ -33,8 +33,11 @@ export default function SVGIconArrow({ width = 80, height = 60, onClick, classNa
           C ${adjustCoordinateX(40)} ${adjustCoordinateY(10)} ${adjustCoordinateX(49)} ${adjustCoordinateY(18)} ${adjustCoordinateX(45)} ${adjustCoordinateY(22)} h-${adjustCoordinateY(2)}`;
 
     return (
-        <div className="svg-icon-group" onClick={onClick} style={{ width: `${width}px`, height: `${height}px` }}>
-            <svg className={`${className}`} width={width} height={height} xmlns="http://www.w3.org/2000/svg">
+        <div className="svg-icon-group" onClick={onClick} style={{ width: "10vw", height: "10vh" }}>
+            <svg className={`${className}`}
+                viewBox={`0 0 ${width} ${height}`}
+                xmlns="http://www.w3.org/2000/svg"
+                preserveAspectRatio="xMidYMid meet">
                 {/* Draw the arrow shape via paths */}
                 <path id="icon-arrow"
                     d={adjustedPathData}

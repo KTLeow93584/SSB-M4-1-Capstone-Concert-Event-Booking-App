@@ -19,8 +19,11 @@ export default function SVGButtonPlay({ width = 150, height = 150, onClick, clas
     const arrowPoints = `${width * 0.3},${height * 0.3} ${width * 0.3},${height * 0.7} ${width * 0.8},${height * 0.5}`;
 
     return (
-        <div onClick={onClick} style={{ width, height }}>
-            <svg className={`${className} rounded-circle`} width={width} height={height} xmlns="http://www.w3.org/2000/svg">
+        <div onClick={onClick} style={{ width: "10vw", height: "10vh" }}>
+            <svg className={`${className}`}
+                viewBox={`0 0 ${width} ${height}`}
+                xmlns="http://www.w3.org/2000/svg"
+                preserveAspectRatio="xMidYMid meet">
                 {/* Circular Outline */}
                 <circle id="button-outline" r={width / 2} cx={width / 2} cy={height / 2} stroke="#cccccc" strokeWidth="4" fill="transparent" />
 

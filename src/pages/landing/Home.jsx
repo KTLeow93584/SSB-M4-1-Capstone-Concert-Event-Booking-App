@@ -192,7 +192,7 @@ function GigSection() {
                     <p onClick={() => navigate("#")} className="content-absolute-button-text m-0 p-0" role="button">
                         VIEW MORE
                     </p>
-                    <SVGButtonArrow width="65" height="65"
+                    <SVGButtonArrow width="125" height="125"
                         onClick={() => navigate("#")}
                         className="content-explore-button" />
                 </div>
