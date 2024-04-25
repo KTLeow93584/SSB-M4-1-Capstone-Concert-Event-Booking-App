@@ -36,7 +36,8 @@ export function updateDeviceID(id) {
  * @param function      onFailedCallback           Callback when API failed.
  */
 export async function callServerAPI(subURL, method = "GET", body = {},
-    onSuccessfulCallback = null, onFailedCallback = null, onErrorCallback = null) {
+    onSuccessfulCallback = null, onFailedCallback = null, onErrorCallback = null,
+    moveToErrorPageOnServerError = true) {
     const fullURL = inhouseServerMainURL + subURL;
 
     // Debug
@@ -84,16 +85,17 @@ export async function callServerAPI(subURL, method = "GET", body = {},
             // Debug
             //console.log("[On API Request Success w/ Error Messages] Error.", errorObj);
 
-            if (onFailedCallback)
+            if (onFailedCallback) {
                 onFailedCallback({
                     code: errorObj.code,
                     status: errorObj.status,
                     messages: networkErrorCodeMessages[errorObj.status] ?? "Undocumented Network Error."
                 });
+            }
 
             if (errorObj.status === 401 && errorObj.code === "unauthorized-access")
                 window.dispatchEvent(new CustomEvent(errorNoAuthEventName));
-            if (errorObj.status === 500)
+            if (errorObj.status === 500 && moveToErrorPageOnServerError)
                 window.dispatchEvent(new CustomEvent(errorServerEventName));
         }
         else {
@@ -122,7 +124,8 @@ export async function callServerAPI(subURL, method = "GET", body = {},
                 status: error.request.status
             });
 
-        window.dispatchEvent(new CustomEvent(errorServerEventName));
+        if (moveToErrorPageOnServerError)
+            window.dispatchEvent(new CustomEvent(errorServerEventName));
     }
 }
 // ====================================================================

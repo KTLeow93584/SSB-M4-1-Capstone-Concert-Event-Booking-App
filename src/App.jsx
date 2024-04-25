@@ -104,7 +104,7 @@ function App() {
 
           // Debug
           //console.log("[Who Am I Verification Failed - Start of App Lifespan] Error.", error);
-        }
+        }, null, false
       );
     }
 
