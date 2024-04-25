@@ -1,5 +1,5 @@
 // =========================================
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -16,6 +16,7 @@ import Image from 'react-bootstrap/Image';
 import { onFacebookAuthPrompt, onGoogleAuthPrompt } from '../../apis/authAPIHandler.jsx';
 import { onLoadingStart, onLoadingEnd } from '../../data/loaders.js';
 import { register } from '../../feature/activeUser/activeUserSlice.jsx';
+import { callServerAPI } from '../../apis/apiAxiosFetch.jsx';
 
 import googleIcon from '../../assets/images/auth/google.webp';
 import "./RegistrationPage.css";
@@ -60,7 +61,7 @@ function RegistrationForm() {
     const [name, setName] = useState((location.state && location.state.name) ? location.state.name : "");
     // ====================
     const [email, setEmail] = useState((location.state && location.state.email) ? location.state.email : "");
-    const [countryCodeIndex, setCountryCodeIndex] = useState(0);
+    const [countryIndex, setCountryIndex] = useState(0);
     const [contactNumber, setContactNumber] = useState("");
 
     const [image, setImage] = useState((location.state && location.state.image) ? location.state.image : "");
@@ -74,6 +75,7 @@ function RegistrationForm() {
     const [isCorrectPasswordFormat, setIsCorrectPasswordFormat] = useState(true);
 
     const [isEmailAlreadyInUse, setIsEmailAlreadyInUse] = useState(false);
+    const [isContactNumberAlreadyInUse, setIsContactNumberAlreadyInUse] = useState(false);
     const [isFormIncomplete, setIsFormIncomplete] = useState(false);
     const [isFormAmbiguous, setIsFormAmbiguous] = useState(false);
     const [errorSocialsMessage, setErrorSocialsMessage] = useState("");
@@ -98,29 +100,8 @@ function RegistrationForm() {
         imageRef.current.value = "";
     };
     // ====================
-    const countryCodes = [
-        {
-            id: 1,
-            text: "Malaysia (+60)",
-            value: "+60"
-        },
-        {
-            id: 2,
-            text: "Singapore (+65)",
-            value: "+65"
-        },
-        {
-            id: 3,
-            text: "Indonesia (+62)",
-            value: "+62"
-        },
-        {
-            id: 4,
-            text: "Thailand (+66)",
-            value: "+66"
-        }
-    ];
-    const onSelectCountryCode = (eventKey) => setCountryCodeIndex(eventKey);
+    const [countries, setCountries] = useState([]);
+    const onSelectCountry = (eventKey) => setCountryIndex(eventKey);
     // ====================
     const [organizationRegID, setOrganizationRegID] = useState("");
     const [nric, setNRIC] = useState("");
@@ -194,7 +175,7 @@ function RegistrationForm() {
         onLoadingStart("Global");
         const requestBody = isOrganization ? {
             email, password,
-            country_id: countryCodes[countryCodeIndex].id,
+            country_id: countries[countryIndex].id,
             contact_number: contactNumber,
             profile_picture: image,
 
@@ -207,7 +188,7 @@ function RegistrationForm() {
             organization_registration_number: organizationRegID,
         } : {
             email, password,
-            country_id: countryCodes[countryCodeIndex].id,
+            country_id: countries[countryIndex].id,
             contact_number: contactNumber,
             profile_picture: image,
 
@@ -217,7 +198,7 @@ function RegistrationForm() {
 
             // Individuals
             name: name,
-            nric
+            nric: nric
         };
 
         // Debug
@@ -230,13 +211,13 @@ function RegistrationForm() {
                     onLoadingEnd("Global");
 
                     // Debug
-                    //console.log("[On Registration Failed] Payload.", action.payload);
+                    console.log("[On Registration Failed] Payload.", action.payload);
                     onRegisterFailed(action.payload.error);
                 }
                 // On Promise Fulfilled
                 else {
                     // Debug
-                    //console.log("[On Registration Successful] Payload.", action.payload);
+                    console.log("[On Registration Successful] Payload.", action.payload);
 
                     onLoadingEnd("Global");
 
@@ -247,7 +228,7 @@ function RegistrationForm() {
                     setImage("");
 
                     setContactNumber("");
-                    setCountryCodeIndex(0);
+                    setCountryIndex(0);
 
                     setOrganizationName("");
                     setName("");
@@ -326,8 +307,11 @@ function RegistrationForm() {
             case "ambiguous-registration-type":
                 setIsFormAmbiguous(true);
                 break;
-            case "user-already-exist":
+            case "email-already-in-use":
                 setIsEmailAlreadyInUse(true);
+                break;
+            case "contact-number-already-in-use":
+                setIsContactNumberAlreadyInUse(true);
                 break;
             case "incorrect-password-format":
                 setIsCorrectPasswordFormat(false);
@@ -335,6 +319,23 @@ function RegistrationForm() {
             default:
         }
     };
+    // ====================
+    useEffect(() => {
+        callServerAPI("countries", "GET", null,
+            // On Successful Callback
+            (result) => {
+                // Debug
+                //console.log("[Get Country List Successful] Result.", result);
+
+                setCountries(result.countries);
+            },
+            // On Failed Callback
+            (error) => {
+                // Debug
+                //console.log("[Get Country List Failed] Error.", error);
+            }
+        );
+    }, []);
     // ====================
     return (
         <Col className="col-md-6 col-12 d-flex flex-column align-items-center justify-content-center">
@@ -392,6 +393,7 @@ function RegistrationForm() {
                         <div className="d-flex mb-2 mt-3 mx-5">
                             <FormControl id="email" type="email" readonly={isSocialRegistration}
                                 placeholder="Email Address"
+                                maxLength={64}
                                 value={email} autocomplete={true} isRequired={true}
                                 onChangeCallback={(value) => {
                                     setEmail(value);
@@ -404,8 +406,8 @@ function RegistrationForm() {
                         {/* Registration Error - Email already in use */}
                         {
                             isEmailAlreadyInUse ? (
-                                <div className="d-flex mt-3 mx-5">
-                                    <p className="text-danger" style={{ fontSize: "0.8em" }}>
+                                <div className="d-flex mx-5">
+                                    <p className="fw-bold text-danger" style={{ fontSize: "0.9em" }}>
                                         • The email, {email} is already in use.
                                     </p>
                                 </div>
@@ -516,6 +518,7 @@ function RegistrationForm() {
                         <div className="d-flex mb-2 mx-5">
                             <FormControl id="name" type="text" readonly={isSocialRegistration}
                                 placeholder={isOrganization ? "Organization Name" : "Your Name"}
+                                maxLength={128}
                                 value={isOrganization ? organizationName : name} autocomplete={false} isRequired={true}
                                 onChangeCallback={isOrganization ? setOrganizationName : setName} />
                         </div>
@@ -523,17 +526,27 @@ function RegistrationForm() {
                         {/* Contact Number (Company Phone Number if Organization, Individual Phone Number otherwise) */}
                         <div className="d-flex flex-column justify-content-center mb-2 mx-5">
                             <div className="d-flex align-items-center mb-2">
-                                <Dropdown id="dropdown-country-code" onSelect={onSelectCountryCode} className="me-3">
+                                <Dropdown id="dropdown-country-code"
+                                    onSelect={(eventKey) => {
+                                        if (isContactNumberAlreadyInUse)
+                                            setIsContactNumberAlreadyInUse(false);
+
+                                        onSelectCountry(eventKey);
+                                    }}
+                                    className="me-3">
                                     <Dropdown.Toggle>
-                                        {countryCodes[countryCodeIndex].value}
+                                        {
+                                            (countries.length > 0 && countryIndex < countries.length - 1) ?
+                                                countries[countryIndex].phone_code : "N/A"
+                                        }
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu>
                                         {
-                                            countryCodes.map((country, index) => (
+                                            countries.map((country, index) => (
                                                 <Dropdown.Item key={`country-code-${index}`}
                                                     eventKey={index}
-                                                    active={countryCodes[countryCodeIndex] === country.code}>
-                                                    {country.text}
+                                                    active={countries[countryIndex].phone_code === country.phone_code}>
+                                                    {"+" + country.phone_code + " (" + country.name + ")"}
                                                 </Dropdown.Item>
                                             ))
                                         }
@@ -541,16 +554,34 @@ function RegistrationForm() {
                                 </Dropdown>
                                 <FormControl id="contact-number" type="tel"
                                     placeholder="Contact Number"
+                                    maxLength={24}
                                     value={contactNumber} autocomplete={false} isRequired={true}
-                                    onChangeCallback={setContactNumber}
+                                    onChangeCallback={(value) => {
+                                        if (isContactNumberAlreadyInUse)
+                                            setIsContactNumberAlreadyInUse(false);
+
+                                        setContactNumber(value);
+                                    }}
                                 />
                             </div>
                         </div>
+                        {/* ------------------------- */}
+                        {/* Registration Error - Contact Number already in use */}
+                        {
+                            isContactNumberAlreadyInUse ? (
+                                <div className="d-flex mx-5">
+                                    <p className="fw-bold text-danger" style={{ fontSize: "0.9em" }}>
+                                        • The phone number, +{countries[countryIndex].phone_code + contactNumber} is already in use.
+                                    </p>
+                                </div>
+                            ) : null
+                        }
                         {/* ------------------------- */}
                         {/* NRIC or Company Registration Number */}
                         <div className="d-flex mb-2 mx-5">
                             <FormControl id="registree-id" type="text"
                                 placeholder={isOrganization ? "Company Registration ID" : "NRIC"}
+                                maxLength={64}
                                 value={isOrganization ? organizationRegID : nric} autocomplete={false} isRequired={true}
                                 onChangeCallback={isOrganization ? setOrganizationRegID : setNRIC} />
                         </div>
@@ -627,7 +658,7 @@ function RegistrationForm() {
     );
 }
 // =========================================
-function FormControl({ id, labelDesc, type, placeholder, value, autocomplete, readonly, isRequired, onChangeCallback }) {
+function FormControl({ id, labelDesc, type, placeholder, value, maxLength, autocomplete, readonly, isRequired, onChangeCallback }) {
     return (
         <>
             {
@@ -643,6 +674,7 @@ function FormControl({ id, labelDesc, type, placeholder, value, autocomplete, re
                 required={isRequired}
                 disabled={readonly}
                 type={type}
+                maxLength={maxLength}
                 placeholder={placeholder + (isRequired ? "*" : "")}
                 autoComplete={autocomplete ? "true" : "false"}
                 value={value}
@@ -677,6 +709,7 @@ function FormControlPassword({ id, labelDesc, placeholder, value, autocomplete, 
                 type={isPasswordVisible ? "text" : "password"}
                 placeholder={placeholder + "*"}
                 autoComplete={autocomplete ? "true" : "false"}
+                maxLength={64}
                 value={value}
                 onChange={(event) => onChangeCallback ? onChangeCallback(event.target.value) : null}
             />

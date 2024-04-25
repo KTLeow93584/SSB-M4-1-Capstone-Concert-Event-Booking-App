@@ -32,6 +32,9 @@ export default function ProfilePage() {
     const [image, setImage] = useState("");
     const [isCorrectImageFormat, setIsCorrectImageFormat] = useState(true);
 
+    const [isProfileUpdated, setIsProfileUpdated] = useState(false)
+    const [isContactNumberAlreadyInUse, setIsContactNumberAlreadyInUse] = useState(false);
+
     const updateProfileImage = (event) => {
         const file = event.target.files[0];
 
@@ -114,6 +117,7 @@ export default function ProfilePage() {
     // ============
     const onUpdateUserProfile = (event) => {
         event.preventDefault();
+        setIsProfileUpdated(false);
 
         if (!isCorrectImageFormat)
             return;
@@ -131,7 +135,9 @@ export default function ProfilePage() {
                     onLoadingEnd("Global");
 
                     // Debug
-                    //console.log("[On Update User Profile Failed] Payload.", action.payload)
+                    //console.log("[On Update User Profile Failed] Payload.", action.payload);
+
+                    onProfilePageUpdateFailed(action.payload.error);
                 }
                 // On Promise Fulfilled
                 else {
@@ -139,9 +145,22 @@ export default function ProfilePage() {
 
                     // Debug
                     //console.log("[On Update User Profile Successful] Payload.", action.payload);
+
+                    setIsProfileUpdated(true);
                 }
             }
         );
+    };
+
+    const onProfilePageUpdateFailed = (error) => {
+        const errorCode = error.code;
+
+        switch (errorCode) {
+            case "contact-number-already-in-use":
+                setIsContactNumberAlreadyInUse(true);
+                break;
+            default:
+        }
     };
     // ================
     const onReturnToDashboard = () => {
@@ -168,7 +187,7 @@ export default function ProfilePage() {
                                 </Form.Label>
                                 <Form.Control id="name"
                                     value={name}
-                                    maxLength={64}
+                                    maxLength={128}
                                     type="text"
                                     className="w-100"
                                     onChange={(event) => setName(event.target.value)}
@@ -196,7 +215,13 @@ export default function ProfilePage() {
                                 <Form.Label htmlFor="country" className="me-3" style={{ width: "15%", minWidth: "60px" }}>
                                     Country:
                                 </Form.Label>
-                                <Dropdown id="country" onSelect={onSelectCountry} className="w-100 me-3">
+                                <Dropdown id="country"
+                                    onSelect={(eventKey) => {
+                                        if (isContactNumberAlreadyInUse)
+                                            setIsContactNumberAlreadyInUse(false);
+                                        onSelectCountry(eventKey);
+                                    }}
+                                    className="w-100 me-3">
                                     <Dropdown.Toggle>
                                         {country ? country.name : "N/A"}
                                     </Dropdown.Toggle>
@@ -221,24 +246,40 @@ export default function ProfilePage() {
                                 </Form.Label>
                                 <div className="d-flex w-100">
                                     <Form.Control id="country-code"
-                                        value={country ? country.code : ""}
-                                        maxLength={64}
+                                        value={"+" + (country ? country.code : "")}
+                                        maxLength={8}
                                         type="tel"
                                         className="me-1"
                                         style={{
-                                            resize: "none", height: "fit-content", width: "5%",
-                                            minWidth: "45px", maxWidth: "45px"
+                                            resize: "none", height: "fit-content", width: " 5%",
+                                            minWidth: "70px", maxWidth: "70px"
                                         }}
                                         disabled />
                                     <Form.Control id="contact-number"
                                         value={contactNumber}
-                                        maxLength={64}
+                                        maxLength={24}
                                         type="tel"
-                                        onChange={(event) => setContactNumber(event.target.value)}
+                                        onChange={(event) => {
+                                            if (isContactNumberAlreadyInUse)
+                                                setIsContactNumberAlreadyInUse(false);
+
+                                            setContactNumber(event.target.value);
+                                        }}
                                         style={{ resize: "none", height: "fit-content" }}
                                         required />
                                 </div>
                             </div>
+                            {/* -------------------------------------- */}
+                            {/* Update Error - Contact Number already in use */}
+                            {
+                                isContactNumberAlreadyInUse ? (
+                                    <div className="d-flex w-100">
+                                        <p className="fw-bold text-danger" style={{ fontSize: "0.9em" }}>
+                                            • The phone number, +{country.code + contactNumber} is already in use.
+                                        </p>
+                                    </div>
+                                ) : null
+                            }
                             {/* -------------------------------------- */}
                             {/* Profile Picture (Image) */}
                             <div className="d-flex mb-2 w-100">
@@ -287,6 +328,17 @@ export default function ProfilePage() {
                                     Return to Dashboard
                                 </Button>
                             </div>
+                            {/* -------------------------------------- */}
+                            {/* Update Error - Contact Number already in use */}
+                            {
+                                isProfileUpdated ? (
+                                    <div className="d-flex mt-4">
+                                        <p className="fw-bold text-success" style={{ fontSize: "1.1em" }}>
+                                            Account successfully updated!
+                                        </p>
+                                    </div>
+                                ) : null
+                            }
                             {/* -------------------------------------- */}
                         </Col>
                     </Row>

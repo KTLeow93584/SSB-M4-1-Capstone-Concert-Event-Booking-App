@@ -273,7 +273,7 @@ function LoginForm({ navigate }) {
                         {
                             errorMessage ? (
                                 <div className="d-flex mb-2">
-                                    <p className="text-danger" style={{ fontSize: "0.8em" }}>• {errorMessage}</p>
+                                    <p className="fw-bold text-danger" style={{ fontSize: "0.9em" }}>• {errorMessage}</p>
                                 </div>
                             ) : null
                         }
