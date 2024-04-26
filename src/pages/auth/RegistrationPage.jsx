@@ -719,7 +719,8 @@ function RegistrationForm() {
                         onChangeCallback={(value) => setSMSVerifyCode(value)} />
                     <p className="mt-3" style={{ fontSize: "0.9em" }}>
                         Note: There is a chance no <b>SMS</b> would be sent to your phone if your phone is not verified by <b>Telesign</b> as
-                        it&apos;s presently using <b>free trial mode</b>.
+                        it&apos;s presently using <b>free trial mode</b>. You may still utilize our functionalities without this, 
+                        for <b>development/staging</b> servers.
                     </p>
                 </Modal.Body>
                 <Modal.Footer>

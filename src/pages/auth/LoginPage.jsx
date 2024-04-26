@@ -114,7 +114,7 @@ function LoginForm({ navigate }) {
                     onLoadingEnd("Global");
 
                     // Debug
-                    //console.log("[Login Failed] Payload.", action.payload)
+                    console.log("[Login Failed] Payload.", action.payload)
 
                     onFailedLoginCallback(action.payload.error, null);
                 }
@@ -123,7 +123,7 @@ function LoginForm({ navigate }) {
                     onLoadingEnd("Global");
 
                     // Debug
-                    //console.log("[Login Successful] Payload.", action.payload);
+                    console.log("[Login Successful] Payload.", action.payload);
 
                     if (action.payload.client_data) {
                         updateSessionToken(action.payload.client_data.token);
