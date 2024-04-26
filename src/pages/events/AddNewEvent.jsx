@@ -136,6 +136,14 @@ export default function AddNewEvent() {
             }
         })).then(
             (action) => {
+                if (!action.payload) {
+                    onLoadingEnd("Global");
+
+                    // Debug
+                    console.error("[On Create New Event] Error.", action.error);
+                    return;
+                }
+                
                 // On Promise Rejected/Failed, Error Exception.
                 if (action.payload.error) {
                     onLoadingEnd("Global");
@@ -251,13 +259,13 @@ export default function AddNewEvent() {
                             {/* Image Preview */}
                             {
                                 promotionalImage ? (
-                                    <Col className="col-12 d-flex align-items-center mb-3">
+                                    <Col className="col-12 d-flex align-items-center justify-content-center mb-3">
                                         <Image src={promotionalImage} className="me-3"
-                                            style={{ minWidth: "96px", minHeight: "96px", maxWidth: "128px", maxHeight: "128px", width: "100%", height: "auto" }} />
+                                            style={{ maxWidth: "384px", maxHeight: "384px", width: "100%", height: "auto" }} />
                                         <Image src={promotionalImage} className="me-3"
-                                            style={{ minWidth: "64px", minHeight: "64px", maxWidth: "96px", maxHeight: "96px", width: "100%", height: "auto" }} />
+                                            style={{ maxWidth: "256px", maxHeight: "256px", width: "100%", height: "auto" }} />
                                         <Image src={promotionalImage}
-                                            style={{ minWidth: "32px", minHeight: "32x", maxWidth: "64px", maxHeight: "64px", width: "100%", height: "auto" }} />
+                                            style={{ maxWidth: "128px", maxHeight: "128px", width: "100%", height: "auto" }} />
                                     </Col>
                                 ) : null
                             }
