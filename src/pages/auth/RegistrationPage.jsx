@@ -14,22 +14,26 @@ import Form from 'react-bootstrap/Form';
 import Image from 'react-bootstrap/Image';
 import Modal from 'react-bootstrap/Modal';
 
+import { callServerAPI } from '../../apis/apiAxiosFetch.jsx';
 import { onFacebookAuthPrompt, onGoogleAuthPrompt } from '../../apis/authAPIHandler.jsx';
+import { NavigationPanelHome } from '../../components/navs';
 import { onLoadingStart, onLoadingEnd } from '../../data/loaders.js';
 import { register } from '../../feature/activeUser/activeUserSlice.jsx';
-import { callServerAPI } from '../../apis/apiAxiosFetch.jsx';
 
 import googleIcon from '../../assets/images/auth/google.webp';
 import "./RegistrationPage.css";
 // =========================================
 export default function RegistrationPage() {
     return (
-        <Container className="authentication-container" fluid style={{ flex: 1 }}>
-            <Row className="my-5">
-                <RegistrationHeader />
-                <RegistrationForm />
-            </Row>
-        </Container>
+        <>
+            <NavigationPanelHome bgColor="#222222" />
+            <Container className="authentication-container" fluid style={{ flex: 1 }}>
+                <Row style={{ marginTop: "108px", marginBottom: "30px" }}>
+                    <RegistrationHeader />
+                    <RegistrationForm />
+                </Row>
+            </Container>
+        </>
     );
 }
 // =========================================
@@ -719,7 +723,7 @@ function RegistrationForm() {
                         onChangeCallback={(value) => setSMSVerifyCode(value)} />
                     <p className="mt-3" style={{ fontSize: "0.9em" }}>
                         Note: There is a chance no <b>SMS</b> would be sent to your phone if your phone is not verified by <b>Telesign</b> as
-                        it&apos;s presently using <b>free trial mode</b>. You may still utilize our functionalities without this, 
+                        it&apos;s presently using <b>free trial mode</b>. You may still utilize our functionalities without this,
                         for <b>development/staging</b> servers.
                     </p>
                 </Modal.Body>
