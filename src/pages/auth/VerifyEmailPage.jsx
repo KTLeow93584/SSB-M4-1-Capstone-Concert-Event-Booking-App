@@ -31,7 +31,7 @@ export default function VerifyEmailPage() {
             return;
 
         onLoadingStart("Global");
-        callServerAPI("verify", "POST", { token: token },
+        callServerAPI("email/verify", "POST", { token: token },
             // On Successful Callback
             (result) => {
                 onLoadingEnd("Global");
