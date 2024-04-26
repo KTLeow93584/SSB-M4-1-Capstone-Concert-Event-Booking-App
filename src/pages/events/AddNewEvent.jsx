@@ -129,8 +129,8 @@ export default function AddNewEvent() {
             event: {
                 venue_id: venues[venueIndex].id,
                 name: name,
-                start_time: startTime,
-                end_time: endTime,
+                start_time: convertTimestampToUTC(startTime),
+                end_time: convertTimestampToUTC(endTime),
                 promotional_image: promotionalImage,
                 remarks: remarks
             }
@@ -191,24 +191,18 @@ export default function AddNewEvent() {
                                     Start Time/Date:
                                 </Form.Label>
                                 <Form.Control id="event-start-time"
-                                    value={startTime ? startTime.toISOString().slice(0, 16) : ""}
+                                    value={startTime ? toDateTimeInputFormat(startTime) : ""}
                                     type="datetime-local"
                                     min={tomorrow.toISOString().split('T')[0] + 'T00:00'}
                                     onChange={(event) => {
-                                        const localTime = new Date(event.target.value);
-
-                                        // Offset in milliseconds
-                                        const localOffset = localTime.getTimezoneOffset() * 60000;
-                                        const localDateTime = new Date(localTime.getTime() - localOffset);
-
-                                        if (endTime <= localDateTime) {
+                                        if (endTime <= event.target.value) {
                                             setShowTimeWarning(true);
                                             setTimeWarning("The event's end date/time cannot be before the start date/time.");
                                         }
                                         else
                                             setShowTimeWarning(false);
 
-                                        setStartTime(localDateTime);
+                                        setStartTime(event.target.value);
                                     }}
                                 />
                             </div>
@@ -217,24 +211,18 @@ export default function AddNewEvent() {
                                     End Time/Date:
                                 </Form.Label>
                                 <Form.Control id="event-end-time"
-                                    value={endTime ? endTime.toISOString().slice(0, 16) : ""}
+                                    value={endTime ? toDateTimeInputFormat(endTime) : ""}
                                     type="datetime-local"
                                     min={tomorrow.toISOString().split('T')[0] + 'T00:00'}
                                     onChange={(event) => {
-                                        const localTime = new Date(event.target.value);
-
-                                        // Offset in milliseconds
-                                        const localOffset = localTime.getTimezoneOffset() * 60000;
-                                        const localDateTime = new Date(localTime.getTime() - localOffset);
-
-                                        if (localDateTime <= startTime) {
+                                        if (event.target.value <= startTime) {
                                             setShowTimeWarning(true);
                                             setTimeWarning("The event's end date/time cannot be before the start date/time.");
                                         }
                                         else
                                             setShowTimeWarning(false);
 
-                                        setEndTime(localDateTime);
+                                        setEndTime(event.target.value);
                                     }}
                                 />
                             </div>
@@ -349,5 +337,36 @@ export default function AddNewEvent() {
             <VenuePreviewModal show={showVenueModal} venue={targetVenuePreview} onCloseModalCallback={onCloseVenuePreviewModal} />
         </>
     );
+}
+// =========================================
+function toDateTimeInputFormat(timestamp) {
+    const date = new Date(timestamp);
+
+    const result = date.getFullYear() + '-' +
+        (date.getMonth() + 1).toString().padStart(2, '0') + '-' +
+        (date.getDate()).toString().padStart(2, '0') + 'T' +
+        (date.getHours().toString().padStart(2, '0')) + ':' +
+        (date.getMinutes().toString().padStart(2, '0'));
+
+    // Debug
+    //console.log("[Edit Mode] Input", [timestamp, date]);
+    //console.log("[Edit Mode] Result", result);
+
+    return result;
+}
+
+function convertTimestampToUTC(timestamp) {
+    const date = new Date(timestamp);
+
+    // Debug
+    //console.log("[Timestamp Conversion - Modify Event] Input + Date.", [timestamp, date]);
+
+    const convertedTimeStampISOStrSplit = date.toISOString().split(':');
+    const convertedTimeStampISOStr = convertedTimeStampISOStrSplit[0] + ':' + convertedTimeStampISOStrSplit[1];
+
+    // Debug
+    //console.log("[Timestamp Conversion - Modify Event] Output.", [convertedTimeStampISOStr, date, date.toISOString()]);
+
+    return convertedTimeStampISOStr;
 }
 // =========================================
