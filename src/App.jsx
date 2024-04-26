@@ -177,9 +177,7 @@ function App() {
                   } path="/register" />
 
                   <Route element={
-                    <GuestAuth>
-                      <VerifyEmailPage />
-                    </GuestAuth>
+                    <VerifyEmailPage />
                   } path="/verify/:token" />
 
                   <Route element={
