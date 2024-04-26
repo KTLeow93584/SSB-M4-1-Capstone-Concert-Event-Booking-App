@@ -9,6 +9,7 @@ import Row from 'react-bootstrap/Row';
 import Image from 'react-bootstrap/Image';
 
 import { callServerAPI } from '../../apis/apiAxiosFetch.jsx';
+import { NavigationPanelHome } from '../../components/navs';
 import { onLoadingStart, onLoadingEnd } from '../../data/loaders.js';
 
 import checkedImage from "../../assets/images/auth/checked.gif";
@@ -65,19 +66,22 @@ export default function VerifyEmailPage() {
     }, [token]);
     // ================
     return (
-        <Container className="authentication-container" fluid style={{ flex: 1 }}>
-            <Row className="my-5">
-                <Col className="col-12 d-flex flex-column align-items-center">
-                    {
-                        isLoading ? null : (
-                            isSuccessful ?
-                                <VerifiedComponent isRedundant={isRedundant} /> :
-                                <UnverifiedComponent errorMessage={errorMessage} />
-                        )
-                    }
-                </Col>
-            </Row>
-        </Container>
+        <>
+            <NavigationPanelHome bgColor="#222222" />
+            <Container className="authentication-container" fluid style={{ flex: 1 }}>
+                <Row style={{ marginTop: "12%" }}>
+                    <Col className="col-12 d-flex flex-column align-items-center">
+                        {
+                            isLoading ? null : (
+                                isSuccessful ?
+                                    <VerifiedComponent isRedundant={isRedundant} /> :
+                                    <UnverifiedComponent errorMessage={errorMessage} />
+                            )
+                        }
+                    </Col>
+                </Row>
+            </Container>
+        </>
     );
 }
 

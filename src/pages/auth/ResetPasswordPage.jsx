@@ -12,6 +12,7 @@ import Form from 'react-bootstrap/Form';
 import Image from 'react-bootstrap/Image';
 
 import { callServerAPI } from '../../apis/apiAxiosFetch.jsx';
+import { NavigationPanelHome } from '../../components/navs';
 import { onLoadingStart, onLoadingEnd } from '../../data/loaders.js';
 
 import crossedImage from "../../assets/images/auth/crossed.gif";
@@ -171,7 +172,8 @@ function VerifiedResetPasswordComponent({ token, onRequestFailedCallback = null 
     // ====================
     return (
         <>
-            <Form onSubmit={onSubmitPasswordResetRequest}>
+            <NavigationPanelHome bgColor="#222222" />
+            <Form onSubmit={onSubmitPasswordResetRequest} style={{ marginTop: "5%" }}>
                 <Card style={{ minWidth: "35em" }}>
                     <Card.Header className="d-flex flex-column align-items-center">
                         <p className="fs-5 fw-bold text-center my-0 py-0">

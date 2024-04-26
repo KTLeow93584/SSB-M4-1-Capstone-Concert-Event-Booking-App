@@ -11,6 +11,7 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 
 import { callServerAPI } from '../../apis/apiAxiosFetch.jsx';
+import { NavigationPanelHome } from '../../components/navs';
 import { onLoadingStart, onLoadingEnd } from '../../data/loaders.js';
 
 import "./ForgetPasswordPage.css";
@@ -50,60 +51,63 @@ export default function ForgetPasswordPage() {
     const onMoveToLogin = () => navigate("/login");
     // ====================
     return (
-        <Container className="authentication-container" fluid style={{ flex: 1 }}>
-            <Row className="mt-5">
-                <Col className="col-12 d-flex flex-column align-items-center">
-                    <Form onSubmit={onSubmitPasswordChangeRequest}>
-                        <Card>
-                            <Card.Header className="d-flex flex-column align-items-center">
-                                <p className="fs-5 fw-bold text-center my-0 py-0">
-                                    Password Change Request (Forgot Password)
-                                </p>
-                            </Card.Header>
-                            <Card.Body className="mt-2">
-                                {/* ------------------------- */}
-                                {/* Email Field */}
-                                <Form.Label htmlFor="email">
-                                    Email Address*:
-                                </Form.Label>
-                                <Form.Control id="email" type="email" required
-                                    className="mb-3"
-                                    placeholder="Email"
-                                    value={email}
-                                    onChange={(event) => setEmail(event.target.value)}
-                                />
-                                {/* ------------------------- */}
-                                {/* Return to Login Page/Remembered Password Button */}
-                                <div className="d-flex justify-content-center">
-                                    <Button type="submit" onClick={onSubmitPasswordChangeRequest} className="w-100">
-                                        Request for Password Reset
-                                    </Button>
-                                </div>
-                                {/* ------------------------- */}
-                                {/* Return to Login Page/Remembered Password Button */}
-                                <div className="d-flex mb-3 justify-content-center">
-                                    <Button variant="link" onClick={onMoveToLogin} className="forget-password-link w-100">
-                                        Remembered your password?
-                                    </Button>
-                                </div>
-                                {/* ------------------------- */}
-                                {/* Notification Text*/}
-                                {
-                                    isRequestSent ? (
-                                        <div className="d-flex mt-3">
-                                            <p className="text-success" style={{ fontSize: "0.8em" }}>
-                                                • Reset Password Request successfully sent.
-                                            </p>
-                                        </div>
-                                    ) : null
-                                }
-                                {/* ------------------------- */}
-                            </Card.Body>
-                        </Card>
-                    </Form>
-                </Col>
-            </Row>
-        </Container>
+        <>
+            <NavigationPanelHome bgColor="#222222" />
+            <Container className="authentication-container" fluid style={{ flex: 1 }}>
+                <Row style={{ marginTop: "12%" }}>
+                    <Col className="col-12 d-flex flex-column align-items-center">
+                        <Form onSubmit={onSubmitPasswordChangeRequest}>
+                            <Card>
+                                <Card.Header className="d-flex flex-column align-items-center">
+                                    <p className="fs-5 fw-bold text-center my-0 py-0">
+                                        Password Change Request (Forgot Password)
+                                    </p>
+                                </Card.Header>
+                                <Card.Body className="mt-2">
+                                    {/* ------------------------- */}
+                                    {/* Email Field */}
+                                    <Form.Label htmlFor="email">
+                                        Email Address*:
+                                    </Form.Label>
+                                    <Form.Control id="email" type="email" required
+                                        className="mb-3"
+                                        placeholder="Email"
+                                        value={email}
+                                        onChange={(event) => setEmail(event.target.value)}
+                                    />
+                                    {/* ------------------------- */}
+                                    {/* Return to Login Page/Remembered Password Button */}
+                                    <div className="d-flex justify-content-center">
+                                        <Button type="submit" onClick={onSubmitPasswordChangeRequest} className="w-100">
+                                            Request for Password Reset
+                                        </Button>
+                                    </div>
+                                    {/* ------------------------- */}
+                                    {/* Return to Login Page/Remembered Password Button */}
+                                    <div className="d-flex mb-3 justify-content-center">
+                                        <Button variant="link" onClick={onMoveToLogin} className="forget-password-link w-100">
+                                            Remembered your password?
+                                        </Button>
+                                    </div>
+                                    {/* ------------------------- */}
+                                    {/* Notification Text*/}
+                                    {
+                                        isRequestSent ? (
+                                            <div className="d-flex mt-3">
+                                                <p className="text-success" style={{ fontSize: "0.8em" }}>
+                                                    • Reset Password Request successfully sent.
+                                                </p>
+                                            </div>
+                                        ) : null
+                                    }
+                                    {/* ------------------------- */}
+                                </Card.Body>
+                            </Card>
+                        </Form>
+                    </Col>
+                </Row>
+            </Container>
+        </>
     );
 }
 // =========================================
